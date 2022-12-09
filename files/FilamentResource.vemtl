@@ -134,6 +134,8 @@ class <$ crudModelName $>Resource extends Resource
                                 <###>
                                 <% if(input.isImage()) { %>
                                 ->image()
+                                ->preserveFilenames()
+                                ->directory('image_uploads/<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
                                 <% } %>
                                 <###>
                                 <% if(input.isSelect()) { %>

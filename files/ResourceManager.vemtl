@@ -121,6 +121,8 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <###>
                         <% if(input.isImage()) { %>
                         ->image()
+                        ->preserveFilenames()
+                        ->directory('image_uploads/<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
                         <% } %>
                         <###>
                         <% if(input.isSelect()) { %>
