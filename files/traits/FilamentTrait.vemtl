@@ -1,5 +1,8 @@
 <?php
-
+/**
+*  Generated with: https://github.com/kamansoft/vemto-filament-plugin
+*  by: kamansoft.com
+*/
 namespace App\Models\Traits;
 
 trait FilamentTrait

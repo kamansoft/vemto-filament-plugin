@@ -210,6 +210,7 @@ module.exports = (vemto) => {
 
                 let options = this.getOptionsForFilamentResource(crud)
 
+                
                 vemto.renderTemplate('files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
                 vemto.renderTemplate('files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
                 vemto.renderTemplate('files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)
@@ -425,5 +426,7 @@ module.exports = (vemto) => {
         inputCanBeSearchableIndividually(input) {
             return input.isText() || input.isEmail() || input.isUrl() || input.isNumeric()
         }
+
+        
     }
 }

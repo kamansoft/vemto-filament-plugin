@@ -1,4 +1,8 @@
 <?php
+/**
+*  Generated with: https://github.com/kamansoft/vemto-filament-plugin
+*  by: kamansoft.com
+*/
 <# TEMPLATE VARIABLES #>
 <% let crudPluginData = this.crud.pluginConfig %>
 <####>
@@ -221,6 +225,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                 <% } %>
             ])
             ->headerActions([
+                Tables\Actions\AttachAction::make(),
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
@@ -228,6 +233,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\DetachBulkAction::make(),
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

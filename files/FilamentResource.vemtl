@@ -1,4 +1,8 @@
 <?php
+/**
+*  Generated with: https://github.com/kamansoft/vemto-filament-plugin
+*  by: kamansoft.com
+*/
 <# TEMPLATE VARIABLES #>
 <% let crudModelName = this.crud.model.name %>
 <% let crudPluginData = this.crud.pluginConfig %>
