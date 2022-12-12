@@ -1,3 +1,4 @@
+var fs = require('fs');
 module.exports = (vemto) => {
 
     return {
@@ -197,6 +198,10 @@ module.exports = (vemto) => {
             return crud
         },
 
+        projectCustomTemplateFilesPath(){
+            vemto.Api.pluginConsole.log(vemto.getProject())
+        },
+
         generateFilamentFiles() {
             let basePath = 'app/Filament'
                 
@@ -204,12 +209,15 @@ module.exports = (vemto) => {
 
             vemto.renderTemplate('files/traits/HasDescendingOrder.vemtl', `${basePath}/Traits/HasDescendingOrder.php`, {})
             
+            vemto.Api.pluginConsole.log("hola")
+
             this.crudRepository.forEach(crud => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
 
                 let options = this.getOptionsForFilamentResource(crud)
 
+                
                 
                 vemto.renderTemplate('files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
                 vemto.renderTemplate('files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
@@ -427,6 +435,6 @@ module.exports = (vemto) => {
             return input.isText() || input.isEmail() || input.isUrl() || input.isNumeric()
         }
 
-        
+
     }
 }
