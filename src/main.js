@@ -116,7 +116,7 @@ module.exports = (vemto) => {
                     formatAs: 'php'
                 }
 
-            vemto.renderTemplate('files/traits/FilamentTrait.vemtl', `${basePath}/FilamentTrait.php`, options)
+            vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/traits/FilamentTrait.vemtl', `${basePath}/FilamentTrait.php`, options)
         },
 
         addFilamentTraitToUserModel(content, model) {
@@ -199,7 +199,14 @@ module.exports = (vemto) => {
         },
 
         projectCustomTemplateFilesPath(){
-            vemto.Api.pluginConsole.log(vemto.getProject())
+            let project_name = vemto.getProject().name
+
+            if (vemto.pluginFileExists(project_name)){
+                 return project_name+'/';
+            }
+
+            return ''
+
         },
 
         generateFilamentFiles() {
@@ -207,10 +214,8 @@ module.exports = (vemto) => {
                 
             vemto.log.message('Generating Filament Resources...')
 
-            vemto.renderTemplate('files/traits/HasDescendingOrder.vemtl', `${basePath}/Traits/HasDescendingOrder.php`, {})
+            vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/traits/HasDescendingOrder.vemtl', `${basePath}/Traits/HasDescendingOrder.php`, {})
             
-            vemto.Api.pluginConsole.log("hola")
-
             this.crudRepository.forEach(crud => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
@@ -219,11 +224,11 @@ module.exports = (vemto) => {
 
                 
                 
-                vemto.renderTemplate('files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
-                vemto.renderTemplate('files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
-                vemto.renderTemplate('files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)
-                vemto.renderTemplate('files/pages/List.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/List${crud.model.plural}.php`, options)
-                vemto.renderTemplate('files/pages/Create.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Create${crud.model.name}.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/List.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/List${crud.model.plural}.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/Create.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Create${crud.model.name}.php`, options)
                 
                 this.generateFilters(crud)
 
@@ -241,7 +246,7 @@ module.exports = (vemto) => {
 
             filters.forEach(filter => {
                 if(filter == 'DateRange' && crud.model.hasTimestampFields()) {
-                    vemto.renderTemplate(`files/filters/${filter}.vemtl`, `${basePath}/${filter}Filter.php`, {})
+                    vemto.renderTemplate(this.projectCustomTemplateFilesPath()+`files/filters/${filter}.vemtl`, `${basePath}/${filter}Filter.php`, {})
                 }
             })
 
@@ -255,7 +260,7 @@ module.exports = (vemto) => {
 
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
-                vemto.renderTemplate('files/ResourceManager.vemtl', 
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/ResourceManager.vemtl', 
                     `${basePath}/Resources/${crud.model.name}Resource/RelationManagers/${rel.model.plural.case('pascalCase')}RelationManager.php`,
                     relationshipOptions
                 )
@@ -275,6 +280,7 @@ module.exports = (vemto) => {
                     getValidationFromInput: input => this.getValidationFromInput(input),
                     getRelationshipInputName: input => this.getRelationshipInputName(input),
                     inputCanBeSearchableIndividually: input => this.inputCanBeSearchableIndividually(input),
+                    
                 },
                 modules: [
                     { name: 'crud', id: crud.id },
@@ -300,6 +306,7 @@ module.exports = (vemto) => {
 
             options.data.crudModelRelationships = crudModelRelationships
             options.data.modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
+            options.data.projectName=vemto.getProject().name
 
             return options
         },
