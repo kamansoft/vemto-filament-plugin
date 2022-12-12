@@ -1,0 +1,255 @@
+<?php
+/**
+*  Generated with: https://github.com/kamansoft/vemto-filament-plugin
+*  for: <$ this.projectName $>
+*  by: kamansoft.com
+*/
+<# TEMPLATE VARIABLES #>
+<% let crudPluginData = this.crud.pluginConfig %>
+<####>
+
+namespace App\Filament\Resources\<$ this.inverseRelationshipModel.name $>Resource\RelationManagers;
+
+use Illuminate\Support\Str;
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Resources\{
+    Form, Table
+};
+use Filament\Resources\RelationManagers\RelationManager;
+<% if(this.crudHasTextInputs) { %>
+use Filament\Forms\Components\TextInput;
+<% } %>
+<% if(this.crud.hasJsonInputs()) { %>
+use Filament\Forms\Components\KeyValue;
+<% } %>
+<% if(this.crud.hasSelectInputs()) { %>
+use Filament\Forms\Components\Select;
+<% } %>
+<% if(this.crud.hasDatetimeInputs()) { %>
+use Filament\Forms\Components\DateTimePicker;
+<% } %>
+<% if(this.crud.hasDateInputs()) { %>
+use Filament\Forms\Components\DatePicker;
+<% } %>
+<% if(this.crud.hasCheckboxInputs()) { %>
+use Filament\Forms\Components\Toggle;
+<% } %>
+<% if(this.crud.hasColorInputs()) { %>
+use Filament\Forms\Components\ColorPicker;
+<% } %>
+<% if(this.crud.hasFileOrImageInputs()) { %>
+use Filament\Forms\Components\FileUpload;
+<% } %>
+<% if(this.crud.hasTextareaInputs()) { %>
+use Filament\Forms\Components\RichEditor;
+<% } %>
+<% if(this.crud.hasBelongsToInputs()) { %>
+use Filament\Forms\Components\BelongsToSelect;
+use Filament\Tables\Filters\MultiSelectFilter;
+<% } %>
+<% if(this.crud.model.hasTimestampFields()) { %>
+use Illuminate\Database\Eloquent\Builder;
+<% } %>
+use Filament\Forms\Components\Grid;
+<% if(this.crud.model.hasUniqueFields()) { %>
+use Illuminate\Database\Eloquent\Model;
+<% } %>
+<% if(this.crud.hasPasswordInputs()) { %>
+use Livewire\Component;
+use App\Filament\Resources\<$ this.inverseRelationshipModel.name $>Resource\Pages;
+<% } %>
+
+class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends RelationManager
+{
+    protected static string $relationship = '<$ this.crud.model.plural.case('camelCase') $>';
+
+    protected static ?string $recordTitleAttribute = '<$ this.crud.model.getLabelFieldName() $>';
+
+    <% if(crudPluginData.isMasterDetail) { %>
+    protected static bool $shouldRegisterNavigation = false;
+    <% } %>
+
+    public static function getModelLabel(): string
+    {
+        return __('<$ this.crud.model.name $>');
+    }
+
+    public static function getPluralModelLabel(): String
+    {
+        return __('<$ this.crud.model.plural $>');
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Grid::make(['default' => 0])->schema([
+                <% if(this.crud.inputs.length && crudPluginData.inputs) { %>
+                    <# Crud inputs #>
+                    <% for(let input of this.relationshipInputs) { %>
+                        <###>
+                        <% let inputNeedsOptions = input.isSelect() && !input.isForRelationship() %>
+                        <###>
+                        <$ this.getTypeForFilament(input) $>::make('<$ input.name $>')
+                        ->label(__('<$ input.label $>'))
+                        <% if(!input.isJson() && !input.isPassword()) { %>
+                        ->rules(<$ this.getValidationFromInput(input) $>)
+                        <% } %>
+                        <###>
+                        <% if(input.field.isUnique()) { %>
+                        ->unique('<$ input.field.entity.table $>', '<$ input.field.name $>', fn (?Model $record) => $record)
+                        <% } %>
+                        <###>
+                        <% if(input.isNumeric()) { %>
+                        ->numeric()
+                        <% } %>
+                        <###>
+                        <% if(input.isForRelationship()) { %>
+                        ->relationship('<$ input.relationship.name $>', '<$ input.relationship.model.getLabelFieldName() $>')
+                        <% } %>
+                        <###>
+                        <% if(input.isEmail()) { %>
+                        ->email()
+                        <% } %>
+                        <###>
+                        <% if(input.isPassword()) { %>
+                        ->password()
+                        ->dehydrateStateUsing(fn ($state) => \Hash::make($state))
+                        <% if(input.isRequiredOnCreate() || input.isRequiredOnUpdate()) { %>
+                        ->required(
+                            <% if(!input.isRequiredOnUpdate()) { %>
+                                fn (Component $livewire) => $livewire instanceof Pages\Create<$ this.crud.model.name $>
+                            <% } %>
+                            <% if(!input.isRequiredOnCreate()) { %>
+                                fn (Component $livewire) => $livewire instanceof Pages\Edit<$ this.crud.model.name $>
+                            <% } %>
+                        )
+                        <% } %>
+                        <% } %>
+                        <###>
+                        <% if(input.isUrl()) { %>
+                        ->url()
+                        <% } %>
+                        <###>
+                        <% if(input.isImage()) { %>
+                        ->image()
+                        ->preserveFilenames()
+                        ->directory(request()->host().'/uploads/'.'<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
+                        <% } %>
+                        <###>
+                        <% if(input.isSelect()) { %>
+                        ->searchable()
+                        <% } %>
+                        <###>
+                        <% if(input.isJson() && !input.field.nullable) { %>
+                        ->required()
+                        <% } %>
+                        <###>
+                        <% if(inputNeedsOptions) { %>
+                        ->options([
+                            <% for(let item of input.items) { %>
+                                '<$ item.value $>' => '<$ item.label $>',
+                            <% } %>
+                        ])
+                        <% } %>
+                        <###>
+                        <% if(input.placeholder && !input.isCheckbox() && !input.isJson()) { %>
+                        ->placeholder('<$ input.placeholder $>')
+                        <% } %>
+                        <###>
+                        <% if(input.defaultValue) { %>
+                        ->default('<$ input.defaultValue $>')
+                        <% } %>
+                        ->columnSpan([
+                            'default' => <$ input.cols $>,
+                            'md' => <$ input.colsMedium $>,
+                            'lg' => <$ input.colsLarge $>
+                        ]),
+
+                    <% } %>
+                <% } %>
+                ])
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                <% if(this.crudTableInputs.length) { %>
+                    <% for(let inputTable of this.crudTableInputs) { %>
+                        <###>
+                        <% let inputTableName = inputTable.isForRelationship() ? this.getRelationshipInputName(inputTable) : inputTable.name %>
+                        <% let inputTableNeedsLimit = inputTable.isText() || inputTable.isForRelationship() || inputTable.isEmail() || inputTable.isTextarea() || inputTable.isUrl() %>
+                        <###>
+                        Tables\Columns\<$ this.getTableType(inputTable) $>::make('<$ inputTableName $>')
+                        <###>
+                        <% if(inputTable.isDatetime()) { %>
+                            ->dateTime()
+                        <% } %>
+                        <###>
+                        <% if(inputTable.isDate()) { %>
+                            ->date()
+                        <% } %>
+                        <###>
+                        <% if(inputTable.isImage()) { %>
+                            ->rounded()
+                        <% } %>
+                        <###>
+                        <% if(inputTable.isSelect() && !inputTable.isForRelationship()) { %>
+                            ->enum([
+                                <% for(let item of inputTable.items) { %>
+                                    '<$ item.value $>' => '<$ item.label $>',
+                                <% } %>
+                            ])
+                        <% } %>
+                        <###>
+                        <% if(inputTableNeedsLimit) { %>
+                            ->limit(50)
+                        <% } %>,
+                    <% } %>
+                <% } %>
+            ])
+            ->filters([
+                <% if(this.crud.model.hasTimestampFields()) { %>
+                    <###>
+                    Tables\Filters\Filter::make('created_at')
+                        ->form([
+                            Forms\Components\DatePicker::make('created_from'),
+                            Forms\Components\DatePicker::make('created_until'),
+                        ])
+                        ->query(function (Builder $query, array $data): Builder {
+                            return $query
+                                ->when($data['created_from'], fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date))
+                                ->when($data['created_until'], fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date));
+                        }),
+
+                <% } %>
+                <% if(this.crud.hasBelongsToInputs()) { %>
+                    <###>
+                    <% for(let belongsToInput of this.crud.getBelongsToInputs()) { %>
+                        <###>
+                        <% let inputRelModel = belongsToInput.relationship.model %>
+                        <###>
+                        <% if(belongsToInput.isForRelationship()) { %>
+                        MultiSelectFilter::make('<$ belongsToInput.name $>')->relationship('<$ belongsToInput.relationship.name.case('camelCase') $>', '<$ inputRelModel.getLabelFieldName() $>'),
+                        <% } %>
+
+                    <% } %>
+                <% } %>
+            ])
+            ->headerActions([
+                Tables\Actions\AttachAction::make(),
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DetachBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
+    }
+}

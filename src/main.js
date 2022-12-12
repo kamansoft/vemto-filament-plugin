@@ -1,4 +1,3 @@
-var fs = require('fs');
 module.exports = (vemto) => {
 
     return {
@@ -12,7 +11,7 @@ module.exports = (vemto) => {
             let pluginData = vemto.getPluginData(),
                 hasCrudForGeneration = pluginData.cruds.find(crud => crud && crud.selected)
 
-            if(!hasCrudForGeneration) {
+            if (!hasCrudForGeneration) {
                 vemto.log.warning('There is no selected CRUD for generating Filament Resources.')
                 return []
             }
@@ -32,27 +31,27 @@ module.exports = (vemto) => {
         generateCrudsData(cruds) {
             let crudsData = []
 
-                cruds.forEach(crud => {
-                    let crudData = { 'selected': true, 'id': crud.id, 'inputs': true, 'relationships': [] },
-                        crudRelationships = this.getAllRelationshipsFromModel(crud.model)
+            cruds.forEach(crud => {
+                let crudData = { 'selected': true, 'id': crud.id, 'inputs': true, 'relationships': [] },
+                    crudRelationships = this.getAllRelationshipsFromModel(crud.model)
 
-                    if(crudRelationships.length) {
-                        crudRelationships.forEach(rel => {
-                            crudData.relationships[rel.id] = { 'selected': true }
-                        })
-                    }
+                if (crudRelationships.length) {
+                    crudRelationships.forEach(rel => {
+                        crudData.relationships[rel.id] = { 'selected': true }
+                    })
+                }
 
-                    crudsData[crud.id] = crudData
-                })
-            
+                crudsData[crud.id] = crudData
+            })
+
             return crudsData.map(crud => crud)
         },
 
         composerPackages(packages) {
-            if(this.projectHasFilamentInstalled()) {
+            if (this.projectHasFilamentInstalled()) {
                 return packages
             }
-            
+
             packages.require['filament/filament'] = '^2.0'
 
             return packages
@@ -66,19 +65,19 @@ module.exports = (vemto) => {
             let phpVersionBuffer = vemto.executePhp('-r "echo PHP_VERSION;"'),
                 phpVersion = phpVersionBuffer.toString()
 
-            if(vemto.versionIsSmallerThan(phpVersion, '8.0.0')) {
+            if (vemto.versionIsSmallerThan(phpVersion, '8.0.0')) {
                 vemto.log.error('[FILAMENT ERROR] You have a smaller PHP version than required to use the Filament v2 (>= 8.0)')
                 vemto.generator.abort()
             }
-            
-            if(!this.projectHasFilamentInstalled()) {
+
+            if (!this.projectHasFilamentInstalled()) {
                 vemto.log.message('Installing the Laravel Filament package...')
                 vemto.executeComposer('update')
             }
 
             let selectedCruds = this.crudsSelectedForFilament()
 
-            if(!selectedCruds.length) return
+            if (!selectedCruds.length) return
 
             this.addSelectedCrudsToRepository(selectedCruds)
 
@@ -90,14 +89,14 @@ module.exports = (vemto) => {
         },
 
         beforeRenderModel(template, content) {
-            if(this.projectHasFilamentInstalled()) {
+            if (this.projectHasFilamentInstalled()) {
                 return content
             }
 
             let data = template.getData(),
                 model = data.model
 
-            if(model.name == 'User') {
+            if (model.name == 'User') {
                 return this.prepareUserModel(content, model)
             }
 
@@ -116,12 +115,12 @@ module.exports = (vemto) => {
                     formatAs: 'php'
                 }
 
-            vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/traits/FilamentTrait.vemtl', `${basePath}/FilamentTrait.php`, options)
+            vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/traits/FilamentTrait.vemtl', `${basePath}/FilamentTrait.php`, options)
         },
 
         addFilamentTraitToUserModel(content, model) {
             let phpFile = vemto.parsePhp(content)
-            
+
             vemto.log.message(`Adding Filament trait to ${model.name} model...`)
 
             phpFile.addUseStatement('App\\Models\\Traits\\FilamentTrait')
@@ -134,7 +133,7 @@ module.exports = (vemto) => {
                     'class User extends Authenticatable',
                     'class User extends Authenticatable implements FilamentUser'
                 )
-            
+
             return finalCode
         },
 
@@ -144,7 +143,7 @@ module.exports = (vemto) => {
             cruds.forEach(crud => {
                 let crudData = projectCruds.find(projectCrud => projectCrud.id === crud.id)
 
-                if(!crudData) return
+                if (!crudData) return
 
                 crudData = this.generatePluginConfigForCrud(crudData, crud.inputs, crud.relationships, false)
 
@@ -156,20 +155,20 @@ module.exports = (vemto) => {
             let relationships = this.getAllRelationshipsFromModel(crud.model)
 
             relationships.forEach(rel => {
-                let crudRelationshipData = crud.pluginConfig.relationships 
-                    ? crud.pluginConfig.relationships[rel.id]
-                    : null
+                let crudRelationshipData = crud.pluginConfig.relationships ?
+                    crud.pluginConfig.relationships[rel.id] :
+                    null
 
                 let relationshipIsNotSelected = !crudRelationshipData || !crudRelationshipData.selected
 
-                if(crudIsFromPluginConfig && relationshipIsNotSelected) return
+                if (crudIsFromPluginConfig && relationshipIsNotSelected) return
 
                 let relModelCrud = rel.model.getMainCruds()[0],
                     crudModelExistsOnRepository = this.crudRepository.find(crud => crud.model.id === rel.model.id)
 
-                if(crudModelExistsOnRepository) return
+                if (crudModelExistsOnRepository) return
 
-                if(!relModelCrud) {
+                if (!relModelCrud) {
                     relModelCrud = vemto.createFakeCrudFromModel(rel.model)
                 }
 
@@ -182,14 +181,14 @@ module.exports = (vemto) => {
         },
 
         generatePluginConfigForCrud(crud, inputs, relationships, isMasterDetail = false) {
-            if(!crud.pluginConfig) {
+            if (!crud.pluginConfig) {
                 crud.pluginConfig = {}
             }
 
             crud.pluginConfig.inputs = inputs
             crud.pluginConfig.relationships = relationships
 
-            if(isMasterDetail) {
+            if (isMasterDetail) {
                 crud.pluginConfig.isMasterDetail = true
             } else {
                 crud.pluginConfig.isSelectedCrud = true
@@ -198,55 +197,68 @@ module.exports = (vemto) => {
             return crud
         },
 
-        projectCustomTemplateFilesPath(){
+        projectCustomTemplateFilesPath() {
+            let defaultTemplatesPath = "default-files-templates";
             let project_name = vemto.getProject().name
 
-            if (vemto.pluginFileExists(project_name)){
-                 return project_name+'/';
+            let projectTemplatesPath = project_name + '-files-templates'
+            if (vemto.pluginFileExists(projectTemplatesPath)) {
+                return projectTemplatesPath + "/";
             }
 
-            return ''
+            vemto.log.warning("templates folder for project " + project_name + ": " + projectTemplatesPath + " not found, using: " + defaultTemplatesPath)
+
+            return defaultTemplatesPath + "/";
 
         },
 
         generateFilamentFiles() {
             let basePath = 'app/Filament'
-                
-            vemto.log.message('Generating Filament Resources...')
 
-            vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/traits/HasDescendingOrder.vemtl', `${basePath}/Traits/HasDescendingOrder.php`, {})
-            
+            vemto.log.message('Generating Filament Resources...')
+            vemto.log.message(this.crudRepository)
+
+            vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/traits/HasDescendingOrder.vemtl', `${basePath}/Traits/HasDescendingOrder.php`, {})
+
+
+            let localizationKeys = {};
+
             this.crudRepository.forEach(crud => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
 
+
                 let options = this.getOptionsForFilamentResource(crud)
 
-                
-                
-                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
-                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
-                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)
-                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/List.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/List${crud.model.plural}.php`, options)
-                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/pages/Create.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Create${crud.model.name}.php`, options)
-                
+                options.data.crudTableInputs.forEach(function(input) {
+                    vemto.log.detail(input)
+                })
+                vemto.log.detail(options.data.crudTableInputs)
+
+
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/List.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/List${crud.model.plural}.php`, options)
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/Create.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Create${crud.model.name}.php`, options)
+
                 this.generateFilters(crud)
 
-                if(!modelRelationshipsManager.length) return
+                if (!modelRelationshipsManager.length) return
 
                 this.generateRelationshipsManager(modelRelationshipsManager, crud, basePath)
             })
         },
 
         generateFilters(crud) {
-            if(!crud || !crud.model) return
-            
+            if (!crud || !crud.model) return
+
             let basePath = 'app/Filament/Filters',
                 filters = ['DateRange']
 
             filters.forEach(filter => {
-                if(filter == 'DateRange' && crud.model.hasTimestampFields()) {
-                    vemto.renderTemplate(this.projectCustomTemplateFilesPath()+`files/filters/${filter}.vemtl`, `${basePath}/${filter}Filter.php`, {})
+                if (filter == 'DateRange' && crud.model.hasTimestampFields()) {
+                    vemto.renderTemplate(this.projectCustomTemplateFilesPath() + `files/filters/${filter}.vemtl`, `${basePath}/${filter}Filter.php`, {})
                 }
             })
 
@@ -256,11 +268,11 @@ module.exports = (vemto) => {
             modelRelationshipsManager.forEach(rel => {
                 let relModelCrud = this.crudRepository.find(crudData => crudData.model.id === rel.model.id)
 
-                if(!relModelCrud) return
+                if (!relModelCrud) return
 
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
-                vemto.renderTemplate(this.projectCustomTemplateFilesPath()+'files/ResourceManager.vemtl', 
+                vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/ResourceManager.vemtl',
                     `${basePath}/Resources/${crud.model.name}Resource/RelationManagers/${rel.model.plural.case('pascalCase')}RelationManager.php`,
                     relationshipOptions
                 )
@@ -280,7 +292,7 @@ module.exports = (vemto) => {
                     getValidationFromInput: input => this.getValidationFromInput(input),
                     getRelationshipInputName: input => this.getRelationshipInputName(input),
                     inputCanBeSearchableIndividually: input => this.inputCanBeSearchableIndividually(input),
-                    
+
                 },
                 modules: [
                     { name: 'crud', id: crud.id },
@@ -288,12 +300,12 @@ module.exports = (vemto) => {
                 ]
             }
 
-            if(isRelationManager) {
+            if (isRelationManager) {
                 options.data.inverseRelationshipModel = inverseRelationshipModel
-                
+
                 options.data.relationshipInputs = crud.inputs
-                
-                if(rel.foreignKey) {
+
+                if (rel.foreignKey) {
                     options.data.relationshipInputs = crud.inputs.filter(input => {
                         return input.field && (input.field.id != rel.foreignKey.id)
                     })
@@ -306,7 +318,7 @@ module.exports = (vemto) => {
 
             options.data.crudModelRelationships = crudModelRelationships
             options.data.modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
-            options.data.projectName=vemto.getProject().name
+            options.data.projectName = vemto.getProject().name
 
             return options
         },
@@ -316,19 +328,19 @@ module.exports = (vemto) => {
                 relationshipsAllowedByFilament = ['morphMany', 'hasMany', 'belongsToMany']
 
             return crudModelRelationships.filter(relationship => {
-                if(!relationshipsAllowedByFilament.includes(relationship.type)) {
+                if (!relationshipsAllowedByFilament.includes(relationship.type)) {
                     return false
                 }
 
-                if(crud.pluginConfig.isMasterDetail) {
+                if (crud.pluginConfig.isMasterDetail) {
                     return true
                 }
 
-                let relationshipData = crudPluginData[crud.id].relationships[relationship.id]
-                    ? crudPluginData[crud.id].relationships[relationship.id]
-                    : null
+                let relationshipData = crudPluginData[crud.id].relationships[relationship.id] ?
+                    crudPluginData[crud.id].relationships[relationship.id] :
+                    null
 
-                if(!relationshipData) {
+                if (!relationshipData) {
                     return false
                 }
 
@@ -346,15 +358,15 @@ module.exports = (vemto) => {
         },
 
         getTableType(input) {
-            if(input.isForRelationship()) {
+            if (input.isForRelationship()) {
                 return 'TextColumn'
             }
 
-            if(input.isImage()) {
+            if (input.isImage()) {
                 return 'ImageColumn'
             }
 
-            if(input.isCheckbox()) {
+            if (input.isCheckbox()) {
                 return 'IconColumn'
             }
 
@@ -370,32 +382,32 @@ module.exports = (vemto) => {
         getTypeForFilament(input) {
             let textInputs = ['email', 'url', 'password', 'text', 'number']
 
-            if(textInputs.includes(input.type)) {
+            if (textInputs.includes(input.type)) {
                 return 'TextInput'
             }
-    
-            if(input.isForRelationship()) {
+
+            if (input.isForRelationship()) {
                 return 'Select'
             }
 
-            if(input.isJson()) return 'KeyValue';
+            if (input.isJson()) return 'KeyValue';
 
-            if(input.isDate()) return 'DatePicker'
-    
-            if(input.isCheckbox()) return 'Toggle'
+            if (input.isDate()) return 'DatePicker'
 
-            if(input.isTextarea()) return 'RichEditor'
+            if (input.isCheckbox()) return 'Toggle'
 
-            if(input.isFileOrImage()) return 'FileUpload'
+            if (input.isTextarea()) return 'RichEditor'
 
-            if(input.isDatetime()) return 'DateTimePicker'
+            if (input.isFileOrImage()) return 'FileUpload'
 
-            if(input.isColor()) return 'ColorPicker'
+            if (input.isDatetime()) return 'DateTimePicker'
+
+            if (input.isColor()) return 'ColorPicker'
 
             return input.type.case('pascalCase')
         },
 
-        crudHasTextInputs(crud){
+        crudHasTextInputs(crud) {
             return crud.hasTextInputs() || crud.hasEmailInputs() || crud.hasUrlInputs() || crud.hasPasswordInputs() || crud.hasNumericInputs()
         },
 
@@ -410,7 +422,7 @@ module.exports = (vemto) => {
 
         beforeRunnerEnd() {
             let projectSettings = vemto.getProject()
-        
+
             vemto.openLink(`${projectSettings.url}/admin`)
         },
 

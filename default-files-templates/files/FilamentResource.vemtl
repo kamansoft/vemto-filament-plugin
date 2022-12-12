@@ -12,6 +12,7 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Support\Str;
 use <$ modelsNamespace $>\<$ crudModelName $>;
 use Filament\{
     Tables, Forms
@@ -74,6 +75,16 @@ class <$ crudModelName $>Resource extends Resource
     protected static bool $shouldRegisterNavigation = false;
     <% } %>
 
+    public static function getModelLabel(): string
+    {
+        return __('<$ this.crud.model.name $>');
+    }
+
+    public static function getPluralModelLabel(): String
+    {
+        return __('<$ this.crud.model.plural $>');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -88,6 +99,7 @@ class <$ crudModelName $>Resource extends Resource
                                 <% let inputNeedsOptions = input.isSelect() && !input.isForRelationship() %>
                                 <###>
                                 <$ this.getTypeForFilament(input) $>::make('<$ input.name $>')
+                                ->label('<$ input.label $>')
                                 <% if(!input.isJson() && !input.isPassword()) { %>
                                 ->rules(<$ this.getValidationFromInput(input) $>)
                                 <% } %>
@@ -136,7 +148,7 @@ class <$ crudModelName $>Resource extends Resource
                                 <% if(input.isImage()) { %>
                                 ->image()
                                 ->preserveFilenames()
-                                ->directory('image_uploads/<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
+                                ->directory(config('cms.images_uploads_path').'<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
                                 <% } %>
                                 <###>
                                 <% if(input.isSelect()) { %>

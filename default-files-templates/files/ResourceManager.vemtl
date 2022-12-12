@@ -10,6 +10,7 @@
 
 namespace App\Filament\Resources\<$ this.inverseRelationshipModel.name $>Resource\RelationManagers;
 
+use Illuminate\Support\Str;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Resources\{
@@ -68,6 +69,16 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
     <% if(crudPluginData.isMasterDetail) { %>
     protected static bool $shouldRegisterNavigation = false;
     <% } %>
+
+    public static function getModelLabel(): string
+    {
+        return __('<$ this.crud.model.name $>');
+    }
+
+    public static function getPluralModelLabel(): String
+    {
+        return __('<$ this.crud.model.plural $>');
+    }
 
     public static function form(Form $form): Form
     {
