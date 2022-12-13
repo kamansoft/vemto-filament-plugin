@@ -2,7 +2,7 @@ module.exports = (vemto) => {
 
     return {
         crudRepository: [],
-
+        localizationKeys: {},
         canInstall() {
             return true
         },
@@ -44,7 +44,9 @@ module.exports = (vemto) => {
                 crudsData[crud.id] = crudData
             })
 
-            return crudsData.map(crud => crud)
+            let to_return = crudsData.map(crud => crud)
+
+            return to_return
         },
 
         composerPackages(packages) {
@@ -214,6 +216,7 @@ module.exports = (vemto) => {
 
         generateFilamentFiles() {
             let basePath = 'app/Filament'
+            let langPath = 'lang'
 
             vemto.log.message('Generating Filament Resources...')
             vemto.log.message(this.crudRepository)
@@ -222,7 +225,7 @@ module.exports = (vemto) => {
 
 
             let localizationKeys = {};
-
+            let _that = this;
             this.crudRepository.forEach(crud => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
@@ -230,10 +233,30 @@ module.exports = (vemto) => {
 
                 let options = this.getOptionsForFilamentResource(crud)
 
+                if (this.checkNested(crud.model, "name")) {
+                    //vemto.log.message('crud model')
+                    //vemto.log.detail(crud.model.name)
+                    localizationKeys[crud.model.name] = crud.model.name
+                        //localizationKeys.push([crud.model.name, crud.model.name]) //[crud.model.name] = crud.model.name
+                }
+
+                if (this.checkNested(crud, "name")) {
+                    //vemto.log.message('crud')
+                    //vemto.log.detail(crud.name)
+                    localizationKeys[crud.name] = crud.name
+                        //localizationKeys.push([crud.name, crud.name])
+                }
+
+
+
                 options.data.crudTableInputs.forEach(function(input) {
-                    vemto.log.detail(input)
+                    //vemto.log.message("label")
+                    if (_that.checkNested(input, "label")) {
+                        //localizationKeys.push([input.label, input.label])
+                        localizationKeys[input.label] = input.label
+                    }
                 })
-                vemto.log.detail(options.data.crudTableInputs)
+
 
 
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
@@ -247,7 +270,16 @@ module.exports = (vemto) => {
                 if (!modelRelationshipsManager.length) return
 
                 this.generateRelationshipsManager(modelRelationshipsManager, crud, basePath)
+
             })
+
+            let stringKeys = {}
+            stringKeys.data = { "langKeysVal": JSON.stringify(localizationKeys) } //JSON.stringify(localizationKeys)
+            vemto.log.detail(stringKeys)
+            vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'LangKeys.vemtl', `${langPath}/en.json`, stringKeys)
+
+            //vemto.log.message("LOCALIZATION KEYS")
+            //vemto.log.detail(localizationKeys)
         },
 
         generateFilters(crud) {
@@ -452,8 +484,15 @@ module.exports = (vemto) => {
 
         inputCanBeSearchableIndividually(input) {
             return input.isText() || input.isEmail() || input.isUrl() || input.isNumeric()
+        },
+        checkNested(obj, ...props) {
+            for (const prop of props) {
+                if (!obj || !Object.prototype.hasOwnProperty.call(obj, prop)) {
+                    return false;
+                }
+                obj = obj[prop];
+            }
+            return true;
         }
-
-
     }
 }
