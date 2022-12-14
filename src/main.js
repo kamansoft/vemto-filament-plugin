@@ -219,7 +219,6 @@ module.exports = (vemto) => {
             let langPath = 'lang'
 
             vemto.log.message('Generating Filament Resources...')
-            vemto.log.message(this.crudRepository)
 
             vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/traits/HasDescendingOrder.vemtl', `${basePath}/Traits/HasDescendingOrder.php`, {})
 
@@ -234,25 +233,24 @@ module.exports = (vemto) => {
                 let options = this.getOptionsForFilamentResource(crud)
 
                 if (this.checkNested(crud.model, "name")) {
-                    //vemto.log.message('crud model')
-                    //vemto.log.detail(crud.model.name)
+                    vemto.log.message('Crud Model Name: ' + crud.model.name)
                     localizationKeys[crud.model.name] = crud.model.name
                         //localizationKeys.push([crud.model.name, crud.model.name]) //[crud.model.name] = crud.model.name
                 }
 
                 if (this.checkNested(crud, "name")) {
-                    //vemto.log.message('crud')
-                    //vemto.log.detail(crud.name)
+                    vemto.log.message('Crud Name: ' + crud.name)
                     localizationKeys[crud.name] = crud.name
                         //localizationKeys.push([crud.name, crud.name])
                 }
 
+                //vemto.log.message("inputS")
+                //vemto.log.detail(options.data.crud.inputs)
+                crud.inputs.forEach(function(input) {
 
 
-                options.data.crudTableInputs.forEach(function(input) {
-                    //vemto.log.message("label")
                     if (_that.checkNested(input, "label")) {
-                        //localizationKeys.push([input.label, input.label])
+                        vemto.log.message("Input Label: " + input.label)
                         localizationKeys[input.label] = input.label
                     }
                 })
@@ -275,13 +273,16 @@ module.exports = (vemto) => {
 
             let stringKeys = {}
             stringKeys.data = { "langKeysVal": JSON.stringify(localizationKeys) } //JSON.stringify(localizationKeys)
-            vemto.log.detail(stringKeys)
+                //vemto.log.detail(stringKeys)
             vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'LangKeys.vemtl', `${langPath}/en.json`, stringKeys)
 
             //vemto.log.message("LOCALIZATION KEYS")
             //vemto.log.detail(localizationKeys)
         },
 
+        generateLangKeysFile(localizationKeys) {
+
+        },
         generateFilters(crud) {
             if (!crud || !crud.model) return
 

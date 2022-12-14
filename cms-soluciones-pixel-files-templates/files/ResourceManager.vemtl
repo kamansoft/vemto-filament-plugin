@@ -185,6 +185,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <###>
                         Tables\Columns\<$ this.getTableType(inputTable) $>::make('<$ inputTableName $>')
                         <###>
+                        ->label(__('<$ inputTable.label $>'))
                         <% if(inputTable.isDatetime()) { %>
                             ->dateTime()
                         <% } %>
