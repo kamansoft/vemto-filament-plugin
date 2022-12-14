@@ -99,7 +99,7 @@ class <$ crudModelName $>Resource extends Resource
                                 <% let inputNeedsOptions = input.isSelect() && !input.isForRelationship() %>
                                 <###>
                                 <$ this.getTypeForFilament(input) $>::make('<$ input.name $>')
-                                ->label('<$ input.label $>')
+                                ->label(__('<$ input.label $>'))
                                 <% if(!input.isJson() && !input.isPassword()) { %>
                                 ->rules(<$ this.getValidationFromInput(input) $>)
                                 <% } %>
@@ -148,7 +148,7 @@ class <$ crudModelName $>Resource extends Resource
                                 <% if(input.isImage()) { %>
                                 ->image()
                                 ->preserveFilenames()
-                                ->directory(config('cms.images_uploads_path').'<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
+                                ->directory(request()->host().'/uploads/'.'<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
                                 <% } %>
                                 <###>
                                 <% if(input.isSelect()) { %>
@@ -199,6 +199,7 @@ class <$ crudModelName $>Resource extends Resource
                         <% let inputTableNeedsLimit = inputTable.isText() || inputTable.isForRelationship() || inputTable.isEmail() || inputTable.isTextarea() || inputTable.isUrl() %>
                         <###>
                         Tables\Columns\<$ this.getTableType(inputTable) $>::make('<$ inputTableName $>')
+                        ->label(__('<$ inputTable.label $>'))
                         ->toggleable()
                         <% if(this.inputCanBeSearchable(inputTable)) { %>
                         ->searchable(<$ this.inputCanBeSearchableIndividually(inputTable) ? 'true, null, true' : '' $>)

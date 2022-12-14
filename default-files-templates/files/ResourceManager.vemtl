@@ -92,6 +92,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <% let inputNeedsOptions = input.isSelect() && !input.isForRelationship() %>
                         <###>
                         <$ this.getTypeForFilament(input) $>::make('<$ input.name $>')
+                        ->label(__('<$ input.label $>'))
                         <% if(!input.isJson() && !input.isPassword()) { %>
                         ->rules(<$ this.getValidationFromInput(input) $>)
                         <% } %>
@@ -134,7 +135,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <% if(input.isImage()) { %>
                         ->image()
                         ->preserveFilenames()
-                        ->directory('image_uploads/<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
+                        ->directory(request()->host().'/uploads/'.'<$ this.crud.model.plural $>/<$ window.pluralize(input.name) $>/')
                         <% } %>
                         <###>
                         <% if(input.isSelect()) { %>
@@ -184,6 +185,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <###>
                         Tables\Columns\<$ this.getTableType(inputTable) $>::make('<$ inputTableName $>')
                         <###>
+                        ->label(__('<$ inputTable.label $>'))
                         <% if(inputTable.isDatetime()) { %>
                             ->dateTime()
                         <% } %>
