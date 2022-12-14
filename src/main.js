@@ -271,10 +271,12 @@ module.exports = (vemto) => {
 
             })
 
-            let stringKeys = {}
-            stringKeys.data = { "langKeysVal": JSON.stringify(localizationKeys) } //JSON.stringify(localizationKeys)
+            let langKeysOptions = {}
+
+            langKeysOptions.data = { "langKeysVal": JSON.stringify(localizationKeys, null, 2) } //JSON.stringify(localizationKeys)
+                //langKeysOptions.formatAs = "js"
                 //vemto.log.detail(stringKeys)
-            vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'LangKeys.vemtl', `${langPath}/en.json`, stringKeys)
+            vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'LangKeys.vemtl', `${langPath}/en.json`, langKeysOptions)
 
             //vemto.log.message("LOCALIZATION KEYS")
             //vemto.log.detail(localizationKeys)
