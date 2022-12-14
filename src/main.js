@@ -225,6 +225,15 @@ module.exports = (vemto) => {
 
             let localizationKeys = {};
             let _that = this;
+
+            this.crudRepository.forEach(crud => {
+                if (this.checkNested(crud.model, "name")) {
+                    vemto.log.message('Crud Model Name: ' + crud.model.name)
+                    localizationKeys[crud.model.name] = crud.model.name
+                        //localizationKeys.push([crud.model.name, crud.model.name]) //[crud.model.name] = crud.model.name
+                }
+            })
+
             this.crudRepository.forEach(crud => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
@@ -232,11 +241,6 @@ module.exports = (vemto) => {
 
                 let options = this.getOptionsForFilamentResource(crud)
 
-                if (this.checkNested(crud.model, "name")) {
-                    vemto.log.message('Crud Model Name: ' + crud.model.name)
-                    localizationKeys[crud.model.name] = crud.model.name
-                        //localizationKeys.push([crud.model.name, crud.model.name]) //[crud.model.name] = crud.model.name
-                }
 
                 if (this.checkNested(crud, "name")) {
                     vemto.log.message('Crud Name: ' + crud.name)
