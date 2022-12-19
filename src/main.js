@@ -286,9 +286,6 @@ module.exports = (vemto) => {
             //vemto.log.detail(localizationKeys)
         },
 
-        generateLangKeysFile(localizationKeys) {
-
-        },
         generateFilters(crud) {
             if (!crud || !crud.model) return
 
@@ -311,6 +308,8 @@ module.exports = (vemto) => {
 
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
+                vemto.log.message("Relationship Manager")
+                vemto.log.detail(relationshipOptions)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/ResourceManager.vemtl',
                     `${basePath}/Resources/${crud.model.name}Resource/RelationManagers/${rel.model.plural.case('pascalCase')}RelationManager.php`,
                     relationshipOptions
@@ -319,6 +318,7 @@ module.exports = (vemto) => {
         },
 
         getOptionsForFilamentResource(crud, isRelationManager = false, rel = {}, inverseRelationshipModel = {}) {
+
             let options = {
                 formatAs: 'php',
                 data: {
@@ -338,6 +338,8 @@ module.exports = (vemto) => {
                     { name: 'crud-settings', id: crud.id }
                 ]
             }
+
+
 
             if (isRelationManager) {
                 options.data.inverseRelationshipModel = inverseRelationshipModel

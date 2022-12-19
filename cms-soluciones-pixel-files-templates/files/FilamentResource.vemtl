@@ -241,6 +241,7 @@ class <$ crudModelName $>Resource extends Resource
                     DateRangeFilter::make('created_at'),
 
                 <% } %>
+
                 <% if(this.crud.hasBelongsToInputs()) { %>
                     <###>
                     <% for(let belongsToInput of this.crud.getBelongsToInputs()) { %>
