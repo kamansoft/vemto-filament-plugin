@@ -188,7 +188,8 @@ class <$ crudModelName $>Resource extends Resource
                         Tables\Columns\<$ this.getTableType(inputTable) $>::make('<$ inputTableName $>')
                         ->toggleable()
                         <% if(this.inputCanBeSearchable(inputTable)) { %>
-                        ->searchable(<$ this.inputCanBeSearchableIndividually(inputTable) ? 'true, null, true' : '' $>)
+                        ->searchable()   
+                        //->searchable(<$ this.inputCanBeSearchableIndividually(inputTable) ? 'true, null, true' : '' $>)
                         <% } %>
                         <###>
                         <% if(inputTable.isDatetime()) { %>
