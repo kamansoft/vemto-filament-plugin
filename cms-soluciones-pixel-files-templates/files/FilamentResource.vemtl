@@ -104,6 +104,19 @@ class <$ crudModelName $>Resource extends Resource
                                 ->rules(<$ this.getValidationFromInput(input) $>)
                                 <% } %>
                                 <###>
+                                <% if(!input.isJson()  && input.isTextarea()) { %>
+                                ->disableToolbarButtons([
+                                    'attachFiles',
+                                    'blockquote',
+                                    'codeBlock',
+                                    'h2',
+                                    'h3',
+                                    //'italic',
+                                    //'link',
+                                    'strike',
+                                ])
+                                <% } %>
+                                <###>
                                 <% if(input.field.nullable) { %>
                                 ->nullable() 
                                 <% } else { %>

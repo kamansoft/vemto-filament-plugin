@@ -97,6 +97,19 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         ->rules(<$ this.getValidationFromInput(input) $>)
                         <% } %>
                         <###>
+                        <% if(!input.isJson()  && input.isTextarea()) {%>
+                        ->disableToolbarButtons([
+                            'attachFiles',
+                            'blockquote',
+                            'codeBlock',
+                            'h2',
+                            'h3',
+                            //'italic',
+                            //'link',
+                            'strike',
+                        ])
+                        <% } %>
+                        <###>
                         <% if(input.field.isUnique()) { %>
                         ->unique('<$ input.field.entity.table $>', '<$ input.field.name $>', fn (?Model $record) => $record)
                         <% } %>
