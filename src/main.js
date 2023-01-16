@@ -228,7 +228,7 @@ module.exports = (vemto) => {
 
             this.crudRepository.forEach(crud => {
                 if (this.checkNested(crud.model, "name")) {
-                    vemto.log.message('Crud Model Name: ' + crud.model.name)
+                    vemto.log.message('Building localization for Crud Model Name: ' + crud.model.name)
                     localizationKeys[crud.model.name] = crud.model.name
                         //localizationKeys.push([crud.model.name, crud.model.name]) //[crud.model.name] = crud.model.name
                 }
@@ -260,6 +260,7 @@ module.exports = (vemto) => {
                 })
 
 
+                
 
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
@@ -308,7 +309,8 @@ module.exports = (vemto) => {
 
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
-                vemto.log.message("Relationship Manager")
+                vemto.log.message("RelationshipOptions for: " +rel.name+' of: '+crud.model.name)
+
                 vemto.log.detail(relationshipOptions)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/ResourceManager.vemtl',
                     `${basePath}/Resources/${crud.model.name}Resource/RelationManagers/${rel.model.plural.case('pascalCase')}RelationManager.php`,

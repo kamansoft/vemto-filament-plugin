@@ -64,6 +64,12 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
 {
     protected static string $relationship = '<$ this.crud.model.plural.case('camelCase') $>';
 
+
+    <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
+    protected static ?string $inverseRelationship = '<$ this.inverseRelationshipModel.name.case('camelCase') $>';
+    <% } %>
+
+
     protected static ?string $recordTitleAttribute = '<$ this.crud.model.getLabelFieldName() $>';
 
     <% if(crudPluginData.isMasterDetail) { %>
@@ -254,16 +260,29 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                 <% } %>
             ])
             ->headerActions([
+                <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
+                Tables\Actions\AssociateAction::make(),
+                <% }else{ %>
                 Tables\Actions\AttachAction::make(),
+                <%} %>
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
+                Tables\Actions\DissociateAction::make(),
+                <% }else{ %>
+                Tables\Actions\DetachAction::make(),
+                <%} %>
+                
             ])
             ->bulkActions([
+                <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
+                Tables\Actions\DissociateBulkAction::make(),
+                <% }else{ %>
                 Tables\Actions\DetachBulkAction::make(),
-                Tables\Actions\DeleteBulkAction::make(),
+                <%} %>
+
             ]);
     }
 }
