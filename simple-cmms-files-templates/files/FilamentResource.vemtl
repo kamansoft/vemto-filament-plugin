@@ -215,7 +215,8 @@ class <$ crudModelName $>Resource extends Resource
                         ->label(__('<$ inputTable.label $>'))
                         ->toggleable()
                         <% if(this.inputCanBeSearchable(inputTable)) { %>
-                        ->searchable(<$ this.inputCanBeSearchableIndividually(inputTable) ? 'true, null, true' : '' $>)
+                        ->searchable()
+                        //->searchable(<$ this.inputCanBeSearchableIndividually(inputTable) ? 'true, null, true' : '' $>)
                         <% } %>
                         <###>
                         <% if(inputTable.isDatetime()) { %>
@@ -254,6 +255,7 @@ class <$ crudModelName $>Resource extends Resource
                     DateRangeFilter::make('created_at'),
 
                 <% } %>
+
                 <% if(this.crud.hasBelongsToInputs()) { %>
                     <###>
                     <% for(let belongsToInput of this.crud.getBelongsToInputs()) { %>
