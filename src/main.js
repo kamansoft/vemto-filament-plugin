@@ -254,14 +254,15 @@ module.exports = (vemto) => {
 
 
                     if (_that.checkNested(input, "label")) {
-                        vemto.log.message("Input Label: " + input.label)
+                        //vemto.log.message("Input Label: " + input.label)
                         localizationKeys[input.label] = input.label
                     }
                 })
 
 
                 
-
+                //options.model=crud.model
+                vemto.log.detail(options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)

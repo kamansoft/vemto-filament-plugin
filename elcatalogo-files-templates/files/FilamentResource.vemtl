@@ -62,6 +62,12 @@ use Illuminate\Database\Eloquent\Model;
 <% if(this.crud.hasPasswordInputs()) { %>
 use Livewire\Component;
 <% } %>
+<% if(this.crud.model.softDeletes) { %>
+use Illuminate\Database\Eloquent\Builder;
+<% } %>
+<% if(this.crud.model.softDeletes) { %>
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+<% } %>
 
 class <$ crudModelName $>Resource extends Resource
 {
@@ -268,6 +274,9 @@ class <$ crudModelName $>Resource extends Resource
                         <% } %>
 
                     <% } %>
+                <% } %>
+                <% if(this.crud.model.softDeletes) { %>
+                    Tables\Filters\TrashedFilter::make(),
                 <% } %>
             ]);
     }
