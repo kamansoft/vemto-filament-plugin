@@ -1,0 +1,19 @@
+<?php
+/**
+*  Generated with: https://github.com/kamansoft/vemto-filament-plugin
+*  used files template : <$ this.projectName $>
+*  by: kamansoft.com
+*/
+<# TEMPLATE VARIABLES #>
+<% let crudModelName = this.crud.model.name %>
+<####>
+
+namespace App\Filament\Resources\<$ crudModelName $>Resource\Pages;
+
+use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\<$ crudModelName $>Resource;
+
+class View<$ crudModelName $> extends ViewRecord
+{
+    protected static string $resource = <$ crudModelName $>Resource::class;
+}

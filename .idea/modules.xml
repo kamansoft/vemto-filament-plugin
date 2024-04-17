@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../elcatalogo/.idea/elcatalogo.iml" filepath="$PROJECT_DIR$/../elcatalogo/.idea/elcatalogo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../elcatalogo_admin/.idea/elcatalogo_admin.iml" filepath="$PROJECT_DIR$/../elcatalogo_admin/.idea/elcatalogo_admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/kamansoft-vemto-filament-plugin.iml" filepath="$PROJECT_DIR$/.idea/kamansoft-vemto-filament-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../kpagos/.idea/kpagos.iml" filepath="$PROJECT_DIR$/../kpagos/.idea/kpagos.iml" />
+    </modules>
+  </component>
+</project>

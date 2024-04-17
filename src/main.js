@@ -53,7 +53,7 @@ module.exports = (vemto) => {
             if (this.projectHasFilamentInstalled()) {
                 return packages
             }
-
+            packages.require["laravel/jetstream"] = "^3.0"
             packages.require['filament/filament'] = '^2.0'
 
             return packages
@@ -260,7 +260,7 @@ module.exports = (vemto) => {
                 })
 
 
-                
+
                 //options.model=crud.model
                 vemto.log.detail(options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
