@@ -54,6 +54,10 @@ use Filament\Tables\Filters\SelectFilter;
 <% if(this.crud.model.hasTimestampFields()) { %>
 use App\Filament\Filters\DateRangeFilter;
 <% } %>
+<% if(this.crud.model.softDeletes) { %>
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+<% } %>
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Card;
 <% if(this.crud.model.hasUniqueFields()) { %>
@@ -118,7 +122,7 @@ class <$ crudModelName $>Resource extends Resource
                                 <% } %>
                                 <###>
                                 <% if(input.field.nullable) { %>
-                                ->nullable() 
+                                ->nullable()
                                 <% } else { %>
                                 ->required()
                                 <% } %>
@@ -187,6 +191,10 @@ class <$ crudModelName $>Resource extends Resource
                                 <% if(input.defaultValue) { %>
                                 ->default('<$ input.defaultValue $>')
                                 <% } %>
+                                <% if(input.name == 'id') { %>
+                                ->disabled()
+                                ->visibleOn(['view','edit'])
+                                <% } %>
                                 ->columnSpan([
                                     'default' => <$ input.cols $>,
                                     'md' => <$ input.colsMedium $>,
@@ -211,6 +219,7 @@ class <$ crudModelName $>Resource extends Resource
                         <% let inputTableName = inputTable.isForRelationship() ? this.getRelationshipInputName(inputTable) : inputTable.name %>
                         <% let inputTableNeedsLimit = inputTable.isText() || inputTable.isForRelationship() || inputTable.isEmail() || inputTable.isTextarea() || inputTable.isUrl() %>
                         <###>
+
                         Tables\Columns\<$ this.getTableType(inputTable) $>::make('<$ inputTableName $>')
                         ->label(__('<$ inputTable.label $>'))
                         ->toggleable()
@@ -245,17 +254,20 @@ class <$ crudModelName $>Resource extends Resource
                         <###>
                         <% if(inputTableNeedsLimit) { %>
                             ->limit(50)
-                        <% } %>,
+                        <% } %>
+            ,//let the comma here for the next column
                     <% } %>
                 <% } %>
             ])
             ->filters([
+                <% if(this.crud.model.softDeletes) { %>
+                    <###>
+                    Tables\Filters\TrashedFilter::make(),
+                <% } %>
                 <% if(this.crud.model.hasTimestampFields()) { %>
                     <###>
                     DateRangeFilter::make('created_at'),
-
                 <% } %>
-
                 <% if(this.crud.hasBelongsToInputs()) { %>
                     <###>
                     <% for(let belongsToInput of this.crud.getBelongsToInputs()) { %>
@@ -284,6 +296,16 @@ class <$ crudModelName $>Resource extends Resource
             <% } %>
         ];
     }
+
+    <% if(this.crud.model.softDeletes) { %>
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+    <% } %>
 
     public static function getPages(): array
     {

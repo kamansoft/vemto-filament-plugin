@@ -13,6 +13,7 @@ namespace App\Filament\Resources\<$ this.inverseRelationshipModel.name $>Resourc
 use Illuminate\Support\Str;
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Tables\Columns;
 use Filament\Resources\{
     Form, Table
 };
@@ -180,6 +181,10 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <% if(input.defaultValue) { %>
                         ->default('<$ input.defaultValue $>')
                         <% } %>
+                        <% if(input.name == 'id') { %>
+                        ->disabled()
+                        ->visibleOn(['view','edit'])
+                        <% } %>
                         ->columnSpan([
                             'default' => <$ input.cols $>,
                             'md' => <$ input.colsMedium $>,
@@ -274,7 +279,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                 <% }else{ %>
                 Tables\Actions\DetachAction::make(),
                 <%} %>
-                
+
             ])
             ->bulkActions([
                 <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>

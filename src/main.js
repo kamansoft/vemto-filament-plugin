@@ -263,7 +263,11 @@ module.exports = (vemto) => {
 
                 //options.model=crud.model
                 vemto.log.detail(options)
+
+                vemto.log.message('Generating FilamentResource for ' + crud.model.name )
+                vemto.log.detail(crud.model)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
+                vemto.log.message('Generating edit page for ' + crud.model.name )
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/List.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/List${crud.model.plural}.php`, options)
