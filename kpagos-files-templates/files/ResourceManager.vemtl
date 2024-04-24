@@ -44,6 +44,7 @@ use Filament\Forms\Components\FileUpload;
 <% } %>
 <% if(this.crud.hasTextareaInputs()) { %>
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\MarkdownEditor;
 <% } %>
 <% if(this.crud.hasBelongsToInputs()) { %>
 use Filament\Forms\Components\BelongsToSelect;
@@ -68,6 +69,8 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
 
     <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
     protected static ?string $inverseRelationship = '<$ this.inverseRelationshipModel.name.case('camelCase') $>';
+    <% }else{ %>
+    //protected static ?string $inverseRelationship = '<$ this.inverseRelationshipModel.name.case('camelCase') $>';
     <% } %>
 
 
@@ -105,6 +108,19 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <% } %>
                         <###>
                         <% if(!input.isJson()  && input.isTextarea()) {%>
+                        ->toolbarButtons([
+                         //'attachFiles',
+                            'bold',
+                            'bulletList',
+                            'codeBlock',
+                            'edit',
+                            'italic',
+                            'link',
+                            'orderedList',
+                            'preview',
+                            'strike',
+                        ])
+                        /*
                         ->disableToolbarButtons([
                             'attachFiles',
                             'blockquote',
@@ -115,6 +131,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                             //'link',
                             'strike',
                         ])
+                        */
                         <% } %>
                         <###>
                         <% if(input.field.isUnique()) { %>
@@ -268,6 +285,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                 <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
                 Tables\Actions\AssociateAction::make(),
                 <% }else{ %>
+                //Tables\Actions\AssociateAction::make(),
                 Tables\Actions\AttachAction::make(),
                 <%} %>
                 Tables\Actions\CreateAction::make(),

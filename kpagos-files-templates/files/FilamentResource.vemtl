@@ -47,6 +47,7 @@ use Filament\Forms\Components\ColorPicker;
 <% } %>
 <% if(this.crud.hasTextareaInputs()) { %>
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\MarkdownEditor;
 <% } %>
 <% if(this.crud.hasBelongsToInputs()) { %>
 use Filament\Tables\Filters\SelectFilter;
@@ -109,16 +110,30 @@ class <$ crudModelName $>Resource extends Resource
                                 <% } %>
                                 <###>
                                 <% if(!input.isJson()  && input.isTextarea()) { %>
+                                ->toolbarButtons([
+                                    //'attachFiles',
+                                    'bold',
+                                    'bulletList',
+                                    'codeBlock',
+                                    'edit',
+                                    'italic',
+                                    'link',
+                                    'orderedList',
+                                    'preview',
+                                    'strike',
+                                ])
+                                /*
                                 ->disableToolbarButtons([
                                     'attachFiles',
                                     'blockquote',
                                     'codeBlock',
                                     'h2',
                                     'h3',
+                                    'sub'
                                     //'italic',
                                     //'link',
                                     'strike',
-                                ])
+                                ])*/
                                 <% } %>
                                 <###>
                                 <% if(input.field.nullable) { %>

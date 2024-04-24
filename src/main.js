@@ -234,11 +234,14 @@ module.exports = (vemto) => {
                 }
             })
 
+            vemto.log.message('crud repository')
+            vemto.log.detail(this.crudRepository)
             this.crudRepository.forEach(crud => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
 
-
+                vemto.log.message('curd model relationships for '+ crud.model.name )
+                vemto.log.detail(crudModelRelationships)
                 let options = this.getOptionsForFilamentResource(crud)
 
 
@@ -314,9 +317,11 @@ module.exports = (vemto) => {
 
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
-                vemto.log.message("RelationshipOptions for: " +rel.name+' of: '+crud.model.name)
+                 vemto.log.message('generationg Relationship manager for: ' +rel.name+' of: '+crud.model.name)
+                vemto.log.message("RelationshipOptions ")
 
                 vemto.log.detail(relationshipOptions)
+                vemto.log.detail(crud.model)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/ResourceManager.vemtl',
                     `${basePath}/Resources/${crud.model.name}Resource/RelationManagers/${rel.model.plural.case('pascalCase')}RelationManager.php`,
                     relationshipOptions
@@ -444,7 +449,9 @@ module.exports = (vemto) => {
 
             if (input.isCheckbox()) return 'Toggle'
 
-            if (input.isTextarea()) return 'RichEditor'
+            //if (input.isTextarea()) return 'RichEditor'
+
+            if (input.isTextarea()) return 'MarkdownEditor'
 
             if (input.isFileOrImage()) return 'FileUpload'
 
