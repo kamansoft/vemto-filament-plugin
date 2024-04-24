@@ -241,6 +241,8 @@ class <$ crudModelName $>Resource extends Resource
                         <% if(this.inputCanBeSearchable(inputTable)) { %>
                         ->searchable()
                         //->searchable(<$ this.inputCanBeSearchableIndividually(inputTable) ? 'true, null, true' : '' $>)
+                        <% }  else { %>
+                        //->searchable()
                         <% } %>
                         <###>
                         <% if(inputTable.isDatetime()) { %>
