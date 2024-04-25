@@ -283,6 +283,7 @@ class <$ crudModelName $>Resource extends Resource
                 <% if(this.crud.model.hasTimestampFields()) { %>
                     <###>
                     DateRangeFilter::make('created_at'),
+                    DateRangeFilter::make('updated_at'),
                 <% } %>
                 <% if(this.crud.hasBelongsToInputs()) { %>
                     <###>

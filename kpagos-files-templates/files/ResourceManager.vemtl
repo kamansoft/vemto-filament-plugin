@@ -47,8 +47,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\MarkdownEditor;
 <% } %>
 <% if(this.crud.hasBelongsToInputs()) { %>
-use Filament\Forms\Components\BelongsToSelect;
-use Filament\Tables\Filters\MultiSelectFilter;
+use Filament\Tables\Filters\SelectFilter;
 <% } %>
 <% if(this.crud.model.hasTimestampFields()) { %>
 use App\Filament\Filters\DateRangeFilter;

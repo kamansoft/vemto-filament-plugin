@@ -262,6 +262,11 @@ module.exports = (vemto) => {
                     }
                 })
 
+                localizationKeys['created_at_from']='Created From';
+                localizationKeys['created_at_from']='Created Until';
+                localizationKeys['updated_at_from']='Updated From';
+                localizationKeys['updated_at_from']='Updated Until';
+
 
 
                 //options.model=crud.model
