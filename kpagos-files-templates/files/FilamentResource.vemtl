@@ -234,7 +234,6 @@ class <$ crudModelName $>Resource extends Resource
                         <% let inputTableName = inputTable.isForRelationship() ? this.getRelationshipInputName(inputTable) : inputTable.name %>
                         <% let inputTableNeedsLimit = inputTable.isText() || inputTable.isForRelationship() || inputTable.isEmail() || inputTable.isTextarea() || inputTable.isUrl() %>
                         <###>
-
                         Tables\Columns\<$ this.getTableType(inputTable) $>::make('<$ inputTableName $>')
                         ->label(__('<$ inputTable.label $>'))
                         ->toggleable()
