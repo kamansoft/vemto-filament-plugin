@@ -9,15 +9,18 @@ namespace App\Filament\Filters;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DatePicker;
+use Illuminate\Support\Str;
 
 class DateRangeFilter extends Filter
 {
     public static function make(?string $name = null): static
     {
+        $dateFromString  = "{$name}_from";
+        $dateUntilString = "{$name}_until";
         return parent::make($name)
             ->form([
-                DatePicker::make("{$name}_from")->label(__("{$name}_from")),
-                DatePicker::make("{$name}_until")->label(__("{$name}_until")),
+                DatePicker::make($dateFromString)->label(__(Str::ucfirst(str_replace('_', ' ', $dateFromString)))),
+                DatePicker::make($dateUntilString)->label(__(__(Str::ucfirst(str_replace('_', ' ', $dateUntilString)))))
             ])
             ->query(function (Builder $query, array $data) use (&$name): Builder {
                 return $query

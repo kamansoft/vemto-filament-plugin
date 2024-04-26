@@ -262,10 +262,7 @@ module.exports = (vemto) => {
                     }
                 })
 
-                localizationKeys['created_at_from']='Created From';
-                localizationKeys['created_at_from']='Created Until';
-                localizationKeys['updated_at_from']='Updated From';
-                localizationKeys['updated_at_from']='Updated Until';
+
 
 
 
@@ -290,6 +287,11 @@ module.exports = (vemto) => {
             })
 
             let langKeysOptions = {}
+
+            localizationKeys['Created at from']='Created From';
+            localizationKeys['Created at until']='Created Until';
+            localizationKeys['Updated at from']='Updated From';
+            localizationKeys['Updated at until']='Updated Until';
 
             langKeysOptions.data = { "langKeysVal": JSON.stringify(localizationKeys, null, 2) } //JSON.stringify(localizationKeys)
                 //langKeysOptions.formatAs = "js"
