@@ -300,6 +300,21 @@ class <$ crudModelName $>Resource extends Resource
 
                     <% } %>
                 <% } %>
+                <% if(this.crudTableInputs.length) { %>
+                    <% for(let inputTable of this.crudTableInputs) { %>
+                        <###>
+                        <% if(inputTable.isSelect() && !inputTable.isForRelationship()) { %>
+                            SelectFilter::make('<$ inputTable.name $>')
+                                ->options([
+                                <% for (let item of inputTable.items) { %>
+                                    '<$ item.value $>' => __('<$ item.label $>'),
+                                <% } %>
+                                ])
+                                ->multiple(),
+
+                        <% } %>
+                    <% } %>
+                <% } %>
             ]);
     }
 

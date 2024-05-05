@@ -263,16 +263,16 @@ module.exports = (vemto) => {
                 })
 
 
-
-
-
-                //options.model=crud.model
-                vemto.log.detail(options)
+                //vemto.log.message('FilamentResource Options')
+                //vemto.log.detail(options)
 
                 vemto.log.message('Generating FilamentResource for ' + crud.model.name )
-                vemto.log.detail(crud.model)
+                vemto.log.message('FilamentResource Inputs')
+                vemto.log.detail(options.data.crud.inputs)
+                vemto.log.message('FilamentResource TABLE Inputs')
+                vemto.log.detail(options.data.crudTableInputs)
+
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
-                vemto.log.message('Generating edit page for ' + crud.model.name )
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/View.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/View${crud.model.name}.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/List.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/List${crud.model.plural}.php`, options)
@@ -324,11 +324,15 @@ module.exports = (vemto) => {
 
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
-                 vemto.log.message('generationg Relationship manager for: ' +rel.name+' of: '+crud.model.name)
-                vemto.log.message("RelationshipOptions ")
+                //vemto.log.message('RelationshipOptions')
+                //vemto.log.detail(relationshipOptions)
+                vemto.log.message('Relationship Manager for: ' +rel.name+' of: '+crud.model.name)
+                vemto.log.message('Relationship Inputs')
+                vemto.log.detail(relationshipOptions.data.crud.inputs)
+                vemto.log.message('Relationship TABLE Inputs')
+                vemto.log.detail(relationshipOptions.data.crudTableInputs)
 
-                vemto.log.detail(relationshipOptions)
-                vemto.log.detail(crud.model)
+
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/ResourceManager.vemtl',
                     `${basePath}/Resources/${crud.model.name}Resource/RelationManagers/${rel.model.plural.case('pascalCase')}RelationManager.php`,
                     relationshipOptions
