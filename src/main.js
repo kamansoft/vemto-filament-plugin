@@ -53,8 +53,8 @@ module.exports = (vemto) => {
             if (this.projectHasFilamentInstalled()) {
                 return packages
             }
-            packages.require["laravel/jetstream"] = "^3.0"
-            packages.require['filament/filament'] = '^2.0'
+            packages.require["laravel/jetstream"] = "3.0"
+            packages.require['filament/filament'] = '2.0'
 
             return packages
         },
@@ -240,7 +240,7 @@ module.exports = (vemto) => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
 
-                vemto.log.message('curd model relationships for '+ crud.model.name )
+                vemto.log.message('curd model relationships for ' + crud.model.name)
                 vemto.log.detail(crudModelRelationships)
                 let options = this.getOptionsForFilamentResource(crud)
 
@@ -255,18 +255,31 @@ module.exports = (vemto) => {
                 //vemto.log.detail(options.data.crud.inputs)
                 crud.inputs.forEach(function(input) {
 
+                    if (input.type == 'select' && !input.relationshipId) {
+                        vemto.log.message('--> Lang for ' + input.name + ' options')
+                        vemto.log.detail(input)
+                        input.items.forEach(function(selectOption) {
+                            localizationKeys[selectOption.label] = selectOption.label
+                        })
+                    }
+
 
                     if (_that.checkNested(input, "label")) {
-                        //vemto.log.message("Input Label: " + input.label)
+                        vemto.log.message('--> Lang for ' + input.name + ' label')
                         localizationKeys[input.label] = input.label
                     }
+
+
+
                 })
+
+
 
 
                 //vemto.log.message('FilamentResource Options')
                 //vemto.log.detail(options)
 
-                vemto.log.message('Generating FilamentResource for ' + crud.model.name )
+                vemto.log.message('Generating FilamentResource for ' + crud.model.name)
                 vemto.log.message('FilamentResource Inputs')
                 vemto.log.detail(options.data.crud.inputs)
                 vemto.log.message('FilamentResource TABLE Inputs')
@@ -288,10 +301,10 @@ module.exports = (vemto) => {
 
             let langKeysOptions = {}
 
-            localizationKeys['Created at from']='Created From';
-            localizationKeys['Created at until']='Created Until';
-            localizationKeys['Updated at from']='Updated From';
-            localizationKeys['Updated at until']='Updated Until';
+            localizationKeys['Created at from'] = 'Created From';
+            localizationKeys['Created at until'] = 'Created Until';
+            localizationKeys['Updated at from'] = 'Updated From';
+            localizationKeys['Updated at until'] = 'Updated Until';
 
             langKeysOptions.data = { "langKeysVal": JSON.stringify(localizationKeys, null, 2) } //JSON.stringify(localizationKeys)
                 //langKeysOptions.formatAs = "js"
@@ -326,7 +339,7 @@ module.exports = (vemto) => {
 
                 //vemto.log.message('RelationshipOptions')
                 //vemto.log.detail(relationshipOptions)
-                vemto.log.message('Relationship Manager for: ' +rel.name+' of: '+crud.model.name)
+                vemto.log.message('Relationship Manager for: ' + rel.name + ' of: ' + crud.model.name)
                 vemto.log.message('Relationship Inputs')
                 vemto.log.detail(relationshipOptions.data.crud.inputs)
                 vemto.log.message('Relationship TABLE Inputs')

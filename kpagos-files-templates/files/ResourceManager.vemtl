@@ -194,7 +194,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                                 <% if(inputNeedsOptions) { %>
                                 ->options([
                                     <% for(let item of input.items) { %>
-                                        '<$ item.value $>' => '<$ item.label $>',
+                                        '<$ item.value $>' =>  __('<$ item.label $>') ,
                                     <% } %>
                                 ])
                                 <% } %>
@@ -261,7 +261,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         <% if(inputTable.isSelect() && !inputTable.isForRelationship()) { %>
                             ->enum([
                                 <% for(let item of inputTable.items) { %>
-                                    '<$ item.value $>' => '<$ item.label $>',
+                                    '<$ item.value $>' =>  __('<$ item.label $>') ,
                                 <% } %>
                             ])
                         <% } %>
@@ -291,6 +291,21 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                             ->label('<$ inputRelModel.name.case('pascalCase') $>'),
                         <% } %>
 
+                    <% } %>
+                <% } %>
+                <% if(this.crudTableInputs.length) { %>
+                    <% for(let inputTable of this.crudTableInputs) { %>
+                        <###>
+                        <% if(inputTable.isSelect() && !inputTable.isForRelationship()) { %>
+                            SelectFilter::make('<$ inputTable.name $>')
+                                ->options([
+                                <% for (let item of inputTable.items) { %>
+                                    '<$ item.value $>' =>  __('<$ item.label $>') ,
+                                <% } %>
+                                ])
+                                ->multiple(),
+
+                        <% } %>
                     <% } %>
                 <% } %>
             ])
