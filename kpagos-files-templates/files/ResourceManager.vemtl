@@ -72,7 +72,7 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
     <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
     protected static ?string $inverseRelationship = '<$ this.inverseRelationshipModel.name.case('camelCase') $>';
     <% }else{ %>
-    //protected static ?string $inverseRelationship = '<$ this.inverseRelationshipModel.name.case('camelCase') $>';
+    protected static ?string $inverseRelationship = '<$ this.inverseRelationshipModel.name.case('camelCase') $>';
     <% } %>
 
 
@@ -108,6 +108,24 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                                 <% if(!input.isJson() && !input.isPassword()) { %>
                                 ->rules(<$ this.getValidationFromInput(input) $>)
                                 <% } %>
+                                <###>
+                                <% if( this.inputIsMoney(input)) { %>
+                                    ->mask(
+                                        function (TextInput\Mask $mask) {
+                                            $currency = currency(config('money.defaults.currency'));
+                                            return $mask->money(
+                                                $currency->getSymbol(),
+                                                ',',
+                                                $currency->getPrecision(),
+                                            );
+                                        }
+                                    )
+                                <% }%>    
+                                <###>
+                                <% if(input.name === 'id' ) { %>
+                                    ->disabled()
+                                    //->hidenOn(['create'])
+                                <% }%>
                                 <###>
                                 <% if(!input.isJson()  && input.isTextarea()) { %>
                                 ->toolbarButtons([
@@ -310,12 +328,12 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                 <% } %>
             ])
             ->headerActions([
-                <% if(this.crud.model.name.case('camelCase') == this.inverseRelationshipModel.name.case('camelCase') ) { %>
-                Tables\Actions\AssociateAction::make(),
-                <% }else{ %>
+
+                //for hasmany relationship 
                 //Tables\Actions\AssociateAction::make(),
-                Tables\Actions\AttachAction::make(),
-                <%} %>
+                //for  belongsToMany relationship
+                //Tables\Actions\AttachAction::make(),
+
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([

@@ -54,7 +54,9 @@ module.exports = (vemto) => {
                 return packages
             }
             packages.require["laravel/jetstream"] = "3.0"
-            packages.require['filament/filament'] = '2.0'
+            packages.require['filament/filament'] = '^2.0'
+            packages.require['akaunting/laravel-money'] = '4.0'
+
 
             return packages
         },
@@ -337,8 +339,12 @@ module.exports = (vemto) => {
 
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
-                //vemto.log.message('RelationshipOptions')
-                //vemto.log.detail(relationshipOptions)
+                vemto.log.message('RelationshipOptions')
+                vemto.log.detail(relationshipOptions)
+
+
+
+
                 vemto.log.message('Relationship Manager for: ' + rel.name + ' of: ' + crud.model.name)
                 vemto.log.message('Relationship Inputs')
                 vemto.log.detail(relationshipOptions.data.crud.inputs)
@@ -364,6 +370,7 @@ module.exports = (vemto) => {
                     crudHasTextInputs: this.crudHasTextInputs(crud),
                     getTableType: input => this.getTableType(input),
                     inputCanBeSearchable: input => this.inputCanBeSearchable(input),
+                    inputIsMoney: input => this.inputIsMoney(input),
                     getValidationFromInput: input => this.getValidationFromInput(input),
                     getRelationshipInputName: input => this.getRelationshipInputName(input),
                     inputCanBeSearchableIndividually: input => this.inputCanBeSearchableIndividually(input),
@@ -456,12 +463,17 @@ module.exports = (vemto) => {
             return textInputs
         },
 
+
+
+
         getTypeForFilament(input) {
             let textInputs = ['email', 'url', 'password', 'text', 'number']
 
             if (textInputs.includes(input.type)) {
                 return 'TextInput'
             }
+
+
 
             if (input.isForRelationship()) {
                 return 'Select'
@@ -540,6 +552,26 @@ module.exports = (vemto) => {
                 obj = obj[prop];
             }
             return true;
+        },
+        inputIsMoney(input) {
+
+            var moneyRelatedFieldWords = [
+                'price',
+                'tax_amount',
+                'debt_amount',
+                'credit_amount',
+                'money_amount',
+                'deposit_amount',
+                'total_money_amount',
+                'sub_total_money_amount',
+                'discount_money_amount',
+            ];
+
+            if (input.isNumeric() && moneyRelatedFieldWords.some(word => input.name.includes(word))) {
+                return true;
+            }
+            return false;
         }
+
     }
 }
