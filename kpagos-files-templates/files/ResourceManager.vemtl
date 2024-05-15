@@ -260,6 +260,10 @@ class <$ this.crud.model.plural.case('pascalCase') $>RelationManager extends Rel
                         //->searchable()
                         <% } %>
                         <###>
+                        <% if( this.inputIsMoney(inputTable)) { %>
+                            ->money(config('money.defaults.currency'))
+                        <% }%>  
+                        <###>
                         <% if(inputTable.isDatetime()) { %>
                             ->dateTime()
                         <% } %>

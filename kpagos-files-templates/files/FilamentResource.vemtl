@@ -265,6 +265,10 @@ class <$ crudModelName $>Resource extends Resource
                         //->searchable()
                         <% } %>
                         <###>
+                        <% if( this.inputIsMoney(inputTable)) { %>
+                        ->money(config('money.defaults.currency'))
+                        <% }%>    
+                        <###>
                         <% if(inputTable.isDatetime()) { %>
                             ->dateTime()
                         <% } %>
