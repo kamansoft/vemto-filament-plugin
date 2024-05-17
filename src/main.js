@@ -484,6 +484,7 @@ module.exports = (vemto) => {
             if (input.isDate()) return 'DatePicker'
 
             if (input.isCheckbox()) return 'Toggle'
+            
 
             //if (input.isTextarea()) return 'RichEditor'
 
@@ -516,7 +517,7 @@ module.exports = (vemto) => {
 
             vemto.openLink(`${projectSettings.url}/admin`)
         },
-
+ 
         getValidationFromInput(input) {
             let inputValidation = input.convertValidationToArrayForTemplate(input.validation),
                 tableName = input.field.entity.table,
@@ -538,7 +539,11 @@ module.exports = (vemto) => {
         },
 
         inputCanBeSearchable(input) {
-            return !input.isDateOrDatetime() && !input.isPassword() && !input.isJson() && !input.isCheckbox() && !input.isForRelationship() && !input.isFileOrImage()
+            //return !input.isDateOrDatetime() && !input.isPassword() && !input.isJson() && !input.isCheckbox() && !input.isForRelationship() && !input.isFileOrImage()
+            const serachabble =  !input.isDateOrDatetime() && !input.isPassword() && !input.isJson() && !input.isCheckbox()   && !input.isFileOrImage() && !input.isSelect() || ( input.isSelect() && input.isForRelationship() ) 
+            vemto.log.message('inputCanBeSearchable '+ input.name+' '+serachabble.toString())
+            
+            return serachabble
         },
 
         inputCanBeSearchableIndividually(input) {
