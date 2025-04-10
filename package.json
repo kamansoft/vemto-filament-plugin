@@ -1,14 +1,11 @@
 {
-    "version": "1.0.0",
-    "id": "com.kamansoft.filament",
-    "name": "kamansoft-filament",
-    "title": "Kamansoft Filament",
-    "description": "Kamansoft version of vemto Filament Plugin",
+    "version": "1.0.5",
+    "id": "app.vemto.filament",
+    "name": "filament",
+    "title": "Filament",
+    "description": "Filament Plugin",
     "image": "",
     "main": "src/main.js",
-    "vueComponent": "dist/kamansoft-filament.umd.min.js",
-    "minVemtoVersion": "1.0.5",
-    "dependencies": {
-        "vue-template-compiler": "^2.7.14"
-    }
+    "vueComponent": "dist/filament.umd.min.js",
+    "minVemtoVersion": "1.0.5"
 }
