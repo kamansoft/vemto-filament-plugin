@@ -34,7 +34,7 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ entry_lib)
 });
 
-;// CONCATENATED MODULE: ../../../../usr/local/lib/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
+;// ../../../../.nvm/versions/node/v22.14.0/lib/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 /* eslint-disable no-var */
 // This file is imported into lib/wc client bundles.
 
@@ -51,55 +51,15 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ const setPublicPath = (null);
 
-;// CONCATENATED MODULE: ../../../../usr/local/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??vue-loader-options!../../../../usr/local/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/Component.vue?vue&type=template&id=6524e1b6&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"w-full"},[_c('label',{staticClass:"block text-sm font-bold"},[_vm._v("Filament")]),_c('small',{staticClass:"mb-2"},[_vm._v("Select the CRUDs to generate a Filament Resource")]),_c('div',{staticClass:"mt-5"},[_c('label',{staticClass:"block text-sm font-bold mb-2"},[_vm._v("Project CRUDs")]),_c('div',{staticClass:"form-check mb-3"},[_c('label',{staticClass:"inline-flex items-center",attrs:{"for":"selectAllCruds"}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.allSelected),expression:"pluginData.allSelected"}],staticClass:"form-checkbox",attrs:{"type":"checkbox","id":"selectAllCruds"},domProps:{"checked":Array.isArray(_vm.pluginData.allSelected)?_vm._i(_vm.pluginData.allSelected,null)>-1:(_vm.pluginData.allSelected)},on:{"change":[function($event){var $$a=_vm.pluginData.allSelected,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData, "allSelected", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData, "allSelected", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData, "allSelected", $$c)}},_vm.selectAllData]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-300"},[_vm._v("Select All")])])]),(_vm.pluginData.cruds)?_vm._l((_vm.projectCruds),function(crud){return _c('div',{key:'crud' + crud.id,staticClass:"bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-900 p-2 rounded-md my-3"},[_c('div',{staticClass:"form-check"},[_c('label',{staticClass:"inline-flex items-center text-gray-800",attrs:{"for":crud.id}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.cruds[crud.id]['selected']),expression:"pluginData.cruds[crud.id]['selected']"}],staticClass:"form-checkbox",attrs:{"type":"checkbox","id":crud.id},domProps:{"checked":Array.isArray(_vm.pluginData.cruds[crud.id]['selected'])?_vm._i(_vm.pluginData.cruds[crud.id]['selected'],null)>-1:(_vm.pluginData.cruds[crud.id]['selected'])},on:{"change":[function($event){var $$a=_vm.pluginData.cruds[crud.id]['selected'],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'selected', $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'selected', $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData.cruds[crud.id], 'selected', $$c)}},function($event){return _vm.toggleCrudData(crud)}]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-100"},[_vm._v(_vm._s(crud.name))])])]),_c('div',{staticClass:"form-check mt-1 ml-3"},[_c('label',{staticClass:"inline-flex items-center"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.cruds[crud.id]['inputs']),expression:"pluginData.cruds[crud.id]['inputs']"}],staticClass:"form-checkbox",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.pluginData.cruds[crud.id]['inputs'])?_vm._i(_vm.pluginData.cruds[crud.id]['inputs'],null)>-1:(_vm.pluginData.cruds[crud.id]['inputs'])},on:{"change":[function($event){var $$a=_vm.pluginData.cruds[crud.id]['inputs'],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'inputs', $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'inputs', $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData.cruds[crud.id], 'inputs', $$c)}},_vm.save]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-300"},[_vm._v("Inputs")])])]),_c('small',{staticClass:"mb-1 ml-3"},[_vm._v("Relationships")]),_vm._l((_vm.getAllRelationshipsFromModel(crud.model)),function(relationship){return _c('div',{key:'rel' + relationship.id,staticClass:"form-check my-1 ml-3"},[_c('label',{staticClass:"inline-flex items-center"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected),expression:"pluginData.cruds[crud.id]['relationships'][relationship.id].selected"}],staticClass:"form-checkbox",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected)?_vm._i(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected,null)>-1:(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected)},on:{"change":[function($event){var $$a=_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id], "selected", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id], "selected", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id], "selected", $$c)}},_vm.save]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-300"},[_vm._v(_vm._s(((relationship.type.case('pascalCase')) + " (" + (relationship.name.case('pascalCase')) + ")")))])])])})],2)}):_vm._e()],2)])}
+;// ../../../../.nvm/versions/node/v22.14.0/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../.nvm/versions/node/v22.14.0/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/Component.vue?vue&type=template&id=2269ff0f
+var render = function render(){var _vm=this,_c=_vm._self._c;return _c('div',{staticClass:"w-full"},[_c('label',{staticClass:"block text-sm font-bold"},[_vm._v("Filament")]),_c('small',{staticClass:"mb-2"},[_vm._v("Select the CRUDs to generate a Filament Resource")]),_c('div',{staticClass:"mt-5"},[_c('label',{staticClass:"block text-sm font-bold mb-2"},[_vm._v("Project CRUDs")]),_c('div',{staticClass:"form-check mb-3"},[_c('label',{staticClass:"inline-flex items-center",attrs:{"for":"selectAllCruds"}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.allSelected),expression:"pluginData.allSelected"}],staticClass:"form-checkbox",attrs:{"type":"checkbox","id":"selectAllCruds"},domProps:{"checked":Array.isArray(_vm.pluginData.allSelected)?_vm._i(_vm.pluginData.allSelected,null)>-1:(_vm.pluginData.allSelected)},on:{"change":[function($event){var $$a=_vm.pluginData.allSelected,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData, "allSelected", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData, "allSelected", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData, "allSelected", $$c)}},_vm.selectAllData]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-300"},[_vm._v("Select All")])])]),(_vm.pluginData.cruds)?_vm._l((_vm.projectCruds),function(crud){return _c('div',{key:'crud' + crud.id,staticClass:"bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-900 p-2 rounded-md my-3"},[_c('div',{staticClass:"form-check"},[_c('label',{staticClass:"inline-flex items-center text-gray-800",attrs:{"for":crud.id}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.cruds[crud.id]['selected']),expression:"pluginData.cruds[crud.id]['selected']"}],staticClass:"form-checkbox",attrs:{"type":"checkbox","id":crud.id},domProps:{"checked":Array.isArray(_vm.pluginData.cruds[crud.id]['selected'])?_vm._i(_vm.pluginData.cruds[crud.id]['selected'],null)>-1:(_vm.pluginData.cruds[crud.id]['selected'])},on:{"change":[function($event){var $$a=_vm.pluginData.cruds[crud.id]['selected'],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'selected', $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'selected', $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData.cruds[crud.id], 'selected', $$c)}},function($event){return _vm.toggleCrudData(crud)}]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-100"},[_vm._v(_vm._s(crud.name))])])]),_c('div',{staticClass:"form-check mt-1 ml-3"},[_c('label',{staticClass:"inline-flex items-center"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.cruds[crud.id]['inputs']),expression:"pluginData.cruds[crud.id]['inputs']"}],staticClass:"form-checkbox",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.pluginData.cruds[crud.id]['inputs'])?_vm._i(_vm.pluginData.cruds[crud.id]['inputs'],null)>-1:(_vm.pluginData.cruds[crud.id]['inputs'])},on:{"change":[function($event){var $$a=_vm.pluginData.cruds[crud.id]['inputs'],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'inputs', $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'inputs', $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData.cruds[crud.id], 'inputs', $$c)}},_vm.save]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-300"},[_vm._v("Inputs")])])]),_c('div',{staticClass:"form-check mt-1 ml-3"},[_c('label',{staticClass:"inline-flex items-center"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.cruds[crud.id]['blamable']),expression:"pluginData.cruds[crud.id]['blamable']"}],staticClass:"form-checkbox",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.pluginData.cruds[crud.id]['blamable'])?_vm._i(_vm.pluginData.cruds[crud.id]['blamable'],null)>-1:(_vm.pluginData.cruds[crud.id]['blamable'])},on:{"change":[function($event){var $$a=_vm.pluginData.cruds[crud.id]['blamable'],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'blamable', $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData.cruds[crud.id], 'blamable', $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData.cruds[crud.id], 'blamable', $$c)}},_vm.save]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-300"},[_vm._v("Blamable")])])]),_c('small',{staticClass:"mb-1 ml-3"},[_vm._v("Relationships")]),_vm._l((_vm.getAllRelationshipsFromModel(crud.model)),function(relationship){return _c('div',{key:'rel' + relationship.id,staticClass:"form-check my-1 ml-3"},[_c('label',{staticClass:"inline-flex items-center"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected),expression:"pluginData.cruds[crud.id]['relationships'][relationship.id].selected"}],staticClass:"form-checkbox",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected)?_vm._i(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected,null)>-1:(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected)},on:{"change":[function($event){var $$a=_vm.pluginData.cruds[crud.id]['relationships'][relationship.id].selected,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id], "selected", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id], "selected", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.pluginData.cruds[crud.id]['relationships'][relationship.id], "selected", $$c)}},_vm.save]}}),_c('span',{staticClass:"ml-2 text-gray-800 dark:text-gray-300"},[_vm._v(_vm._s(`${relationship.type.case('pascalCase')} (${relationship.name.case('pascalCase')})`))])])])})],2)}):_vm._e()],2)])
+}
 var staticRenderFns = []
 
 
-;// CONCATENATED MODULE: ../../../../usr/local/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/Component.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+;// ../../../../.nvm/versions/node/v22.14.0/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/Component.vue?vue&type=script&lang=js
 
-/* harmony default export */ const Componentvue_type_script_lang_js_ = ({
+/* harmony default export */ const Componentvue_type_script_lang_js = ({
     data() {
         return {
             projectCruds: [],
@@ -225,9 +185,9 @@ var staticRenderFns = []
     }
 });
 
-;// CONCATENATED MODULE: ./src/Component.vue?vue&type=script&lang=js&
- /* harmony default export */ const src_Componentvue_type_script_lang_js_ = (Componentvue_type_script_lang_js_); 
-;// CONCATENATED MODULE: ../../../../usr/local/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/runtime/componentNormalizer.js
+;// ./src/Component.vue?vue&type=script&lang=js
+ /* harmony default export */ const src_Componentvue_type_script_lang_js = (Componentvue_type_script_lang_js); 
+;// ../../../../.nvm/versions/node/v22.14.0/lib/node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
@@ -325,7 +285,7 @@ function normalizeComponent(
   }
 }
 
-;// CONCATENATED MODULE: ./src/Component.vue
+;// ./src/Component.vue
 
 
 
@@ -334,7 +294,7 @@ function normalizeComponent(
 /* normalize component */
 ;
 var component = normalizeComponent(
-  src_Componentvue_type_script_lang_js_,
+  src_Componentvue_type_script_lang_js,
   render,
   staticRenderFns,
   false,
@@ -345,7 +305,7 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ const Component = (component.exports);
-;// CONCATENATED MODULE: ../../../../usr/local/lib/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
+;// ../../../../.nvm/versions/node/v22.14.0/lib/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
 /* harmony default export */ const entry_lib = (Component);

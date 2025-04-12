@@ -1,4 +1,3 @@
 #! /bin/bash 
-
 vue-cli-service build ./src/Component.vue --target lib --inline-vue
 

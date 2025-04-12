@@ -27,6 +27,12 @@
                             <span class="ml-2 text-gray-800 dark:text-gray-300">Inputs</span>
                         </label>
                     </div>
+                    <div class="form-check mt-1 ml-3">
+                        <label class="inline-flex items-center">
+                            <input class="form-checkbox" type="checkbox" v-model="pluginData.cruds[crud.id]['blamable']" @change="save">
+                            <span class="ml-2 text-gray-800 dark:text-gray-300">Blamable</span>
+                        </label>
+                    </div>
                     <small class="mb-1 ml-3">Relationships</small>
                     <div class="form-check my-1 ml-3" v-for="relationship in getAllRelationshipsFromModel(crud.model)" :key="'rel' + relationship.id">
                         <label class="inline-flex items-center">
@@ -141,7 +147,7 @@ export default {
             this.projectCruds.forEach(crud => {
                 if(this.pluginData.cruds[crud.id]) return
 
-                let crudData = { 'selected': false, id: crud.id, 'inputs': false, 'relationships': [] },
+                let crudData = { 'selected': false, id: crud.id, 'inputs': false, 'blamable': false, 'relationships': [] },
                     crudRelationships = this.getAllRelationshipsFromModel(crud.model)
 
                 if(crudRelationships.length) {

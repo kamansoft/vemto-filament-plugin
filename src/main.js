@@ -53,9 +53,11 @@ module.exports = (vemto) => {
             if (this.projectHasFilamentInstalled()) {
                 return packages
             }
+            vemto.log.message('Installing Filament Packages right')
             packages.require["laravel/jetstream"] = "3.0"
             packages.require['filament/filament'] = '^2.0'
             packages.require['akaunting/laravel-money'] = '4.0'
+            packages.require['kamansoft/laravel-blame'] = '2.0'
 
 
             return packages
@@ -80,7 +82,8 @@ module.exports = (vemto) => {
             }
 
             let selectedCruds = this.crudsSelectedForFilament()
-
+            vemto.log.message('selectedCruds')
+            vemto.log.detail(selectedCruds)
             if (!selectedCruds.length) return
 
             this.addSelectedCrudsToRepository(selectedCruds)
@@ -93,12 +96,16 @@ module.exports = (vemto) => {
         },
 
         beforeRenderModel(template, content) {
-            if (this.projectHasFilamentInstalled()) {
-                return content
-            }
-
+            vemto.log.message('beforeRenderModel')
+            vemto.log.detail(template)
             let data = template.getData(),
                 model = data.model
+            vemto.log.detail(model)
+            if (this.projectHasFilamentInstalled()) {
+                //return content
+                return this.addLaravelBlameInterface(this.addLaravelBlameTrait(content, model), model)
+            }
+
 
             if (model.name == 'User') {
                 return this.prepareUserModel(content, model)
@@ -113,6 +120,28 @@ module.exports = (vemto) => {
             return this.addFilamentTraitToUserModel(content, model)
         },
 
+        addLaravelBlameTrait(content, model) {
+            let phpFile = vemto.parsePhp(content)
+
+            vemto.log.message(`Adding Laravel Blame trait to ${model.name} model...`)
+            vemto.log.detail(this.helpers.getAllMethodNames(phpFile.onClass(model.name)))
+            vemto.log.detail(model)
+            vemto.log.detail(phpFile.onClass(model.name))
+            vemto.log.detail(phpFile)
+            phpFile.addUseStatement('Kamansoft\\LaravelBlame\\Traits\\ModelBlamer')
+            phpFile.onClass(model.name).addTrait('ModelBlamer')
+
+            return phpFile.getCode()
+        },
+
+        addLaravelBlameInterface(content, model) {
+            let phpFile = vemto.parsePhp(content)
+
+            phpFile.addUseStatement('Kamansoft\\LaravelBlame\\Contracts\\ModelBlame')
+            return this.helpers.addInterfacesToClass(phpFile.onClass(model.name), ['ModelBlame']).getCode()
+
+            //return phpFile.getCode()
+        },
         renderFilamentTrait() {
             let basePath = 'app/Models/Traits/',
                 options = {
@@ -250,37 +279,25 @@ module.exports = (vemto) => {
                 if (this.checkNested(crud, "name")) {
                     vemto.log.message('Crud Name: ' + crud.name)
                     localizationKeys[crud.name] = crud.name
+                    vemto.log.message('--> Lang for; ' + crud.name + ' Crud')
                         //localizationKeys.push([crud.name, crud.name])
                 }
-
-                //vemto.log.message("inputS")
-                //vemto.log.detail(options.data.crud.inputs)
                 crud.inputs.forEach(function(input) {
 
                     if (input.type == 'select' && !input.relationshipId) {
-                        vemto.log.message('--> Lang for ' + input.name + ' options')
                         vemto.log.detail(input)
                         input.items.forEach(function(selectOption) {
                             localizationKeys[selectOption.label] = selectOption.label
+                            vemto.log.message('--> Lang for; ' + selectOption.label + ' option')
+
                         })
                     }
 
-
                     if (_that.checkNested(input, "label")) {
-                        vemto.log.message('--> Lang for ' + input.name + ' label')
+                        vemto.log.message('--> Lang for: ' + input.name + ' input label')
                         localizationKeys[input.label] = input.label
                     }
-
-
-
                 })
-
-
-
-
-                //vemto.log.message('FilamentResource Options')
-                //vemto.log.detail(options)
-
                 vemto.log.message('Generating FilamentResource for ' + crud.model.name)
                 vemto.log.message('FilamentResource Inputs')
                 vemto.log.detail(options.data.crud.inputs)
@@ -309,12 +326,7 @@ module.exports = (vemto) => {
             localizationKeys['Updated at until'] = 'Updated Until';
 
             langKeysOptions.data = { "langKeysVal": JSON.stringify(localizationKeys, null, 2) } //JSON.stringify(localizationKeys)
-                //langKeysOptions.formatAs = "js"
-                //vemto.log.detail(stringKeys)
             vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'LangKeys.vemtl', `${langPath}/en.json`, langKeysOptions)
-
-            //vemto.log.message("LOCALIZATION KEYS")
-            //vemto.log.detail(localizationKeys)
         },
 
         generateFilters(crud) {
@@ -484,7 +496,7 @@ module.exports = (vemto) => {
             if (input.isDate()) return 'DatePicker'
 
             if (input.isCheckbox()) return 'Toggle'
-            
+
 
             //if (input.isTextarea()) return 'RichEditor'
 
@@ -517,7 +529,7 @@ module.exports = (vemto) => {
 
             vemto.openLink(`${projectSettings.url}/admin`)
         },
- 
+
         getValidationFromInput(input) {
             let inputValidation = input.convertValidationToArrayForTemplate(input.validation),
                 tableName = input.field.entity.table,
@@ -540,9 +552,9 @@ module.exports = (vemto) => {
 
         inputCanBeSearchable(input) {
             //return !input.isDateOrDatetime() && !input.isPassword() && !input.isJson() && !input.isCheckbox() && !input.isForRelationship() && !input.isFileOrImage()
-            const serachabble =  !input.isDateOrDatetime() && !input.isPassword() && !input.isJson() && !input.isCheckbox()   && !input.isFileOrImage() && !input.isSelect() || ( input.isSelect() && input.isForRelationship() ) 
-            vemto.log.message('inputCanBeSearchable '+ input.name+' '+serachabble.toString())
-            
+            const serachabble = !input.isDateOrDatetime() && !input.isPassword() && !input.isJson() && !input.isCheckbox() && !input.isFileOrImage() && !input.isSelect() || (input.isSelect() && input.isForRelationship())
+            vemto.log.message('inputCanBeSearchable ' + input.name + ' ' + serachabble.toString())
+
             return serachabble
         },
 
@@ -576,6 +588,63 @@ module.exports = (vemto) => {
                 return true;
             }
             return false;
+        },
+        helpers: {
+            getAllMethodNames(obj) {
+                const methods = new Set();
+                let current = obj;
+                while (current) {
+                    Object.getOwnPropertyNames(current).forEach((name) => {
+                        if (typeof current[name] === 'function') methods.add(name);
+                    });
+                    current = Object.getPrototypeOf(current);
+                }
+                return [...methods];
+            },
+
+            addInterfacesToClass(phpFile, interfaces) {
+                if (!interfaces || !interfaces.length) return phpFile;
+
+                let content = phpFile.content;
+                let classDeclaration = content.match(/class\s+(\w+)\s+(?:extends\s+(\w+))?(?:\s+implements\s+([^{]+))?/);
+
+                if (!classDeclaration) return phpFile;
+
+                let className = classDeclaration[1];
+                let extendsPart = classDeclaration[2] ? ` extends ${classDeclaration[2]}` : '';
+
+                // Get existing interfaces if any
+                let existingInterfaces = [];
+                if (classDeclaration[3]) {
+                    existingInterfaces = classDeclaration[3]
+                        .split(',')
+                        .map(i => i.trim())
+                        .filter(i => i.length > 0);
+                }
+
+                // Filter out interfaces that are already implemented
+                let newInterfaces = interfaces.filter(i => !existingInterfaces.includes(i));
+
+                if (newInterfaces.length === 0) return phpFile;
+
+                let implementsPart = '';
+                if (existingInterfaces.length > 0) {
+                    // Add new interfaces to existing ones
+                    implementsPart = ` implements ${[...existingInterfaces, ...newInterfaces].join(', ')}`;
+                } else {
+                    // Add new interfaces
+                    implementsPart = ` implements ${newInterfaces.join(', ')}`;
+                }
+
+                // Replace the class declaration with the new one that includes interfaces
+                let newContent = content.replace(
+                    /class\s+(\w+)\s+(?:extends\s+(\w+))?(?:\s+implements\s+([^{]+))?/,
+                    `class ${className}${extendsPart}${implementsPart}`
+                );
+
+                phpFile.content = newContent;
+                return phpFile;
+            }
         }
 
     }
