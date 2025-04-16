@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Scopes\Searchable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+
+class Account extends Model {
+    use SoftDeletes;
+    use HasUuids;
+    use HasFactory;
+    use Searchable;
+    
+    protected $fillable = [
+            'account_number',
+            'accoun_name',
+            'account_type_id',
+            'account_id',
+    ];
+
+    protected $searchableFields = ['*'];
+
+
+
+            public function accountType() 
+            {
+                return $this->belongsTo(AccountType::class);
+            }
+
+
+            public function parentAccount() 
+            {
+                return $this->belongsTo(Account::class, 'account_id');
+            }
+
+
+            public function accounts() 
+            {
+                return $this->hasMany(Account::class);
+            }
+
+
+
+
+}

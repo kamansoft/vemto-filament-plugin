@@ -32,7 +32,7 @@ module.exports = (vemto) => {
             let crudsData = []
 
             cruds.forEach(crud => {
-                let crudData = { 'selected': true, 'id': crud.id, 'inputs': true, 'relationships': [] },
+                let crudData = { 'selected': false, id: crud.id, 'inputs': false, 'blamable': false, 'relationships': [] },
                     crudRelationships = this.getAllRelationshipsFromModel(crud.model)
 
                 if (crudRelationships.length) {
@@ -83,7 +83,7 @@ module.exports = (vemto) => {
 
             let selectedCruds = this.crudsSelectedForFilament()
             vemto.log.message('selectedCruds')
-            vemto.log.detail(selectedCruds)
+                //vemto.log.detail(selectedCruds)
             if (!selectedCruds.length) return
 
             this.addSelectedCrudsToRepository(selectedCruds)
@@ -97,15 +97,23 @@ module.exports = (vemto) => {
 
         beforeRenderModel(template, content) {
             vemto.log.message('beforeRenderModel')
-            vemto.log.detail(template)
             let data = template.getData(),
                 model = data.model
-            vemto.log.detail(model)
-            if (this.projectHasFilamentInstalled()) {
-                //return content
-                return this.addLaravelBlameInterface(this.addLaravelBlameTrait(content, model), model)
+
+            let crud_id = (model.getMainCruds().length > 0) ? model.getMainCruds()[0].id : null;
+
+            let blamable = false;
+            if (crud_id) {
+                blamable = data.project.pluginsData["com.kamansoft.filament"].cruds[crud_id].blamable;
             }
 
+            if (this.projectHasFilamentInstalled()) {
+                // Check if the CRUD has blamable set to true
+                if (blamable) {
+                    return this.addLaravelBlameInterface(this.addLaravelBlameTrait(content, model), model)
+                }
+                return content
+            }
 
             if (model.name == 'User') {
                 return this.prepareUserModel(content, model)
@@ -124,10 +132,10 @@ module.exports = (vemto) => {
             let phpFile = vemto.parsePhp(content)
 
             vemto.log.message(`Adding Laravel Blame trait to ${model.name} model...`)
-            vemto.log.detail(this.helpers.getAllMethodNames(phpFile.onClass(model.name)))
-            vemto.log.detail(model)
-            vemto.log.detail(phpFile.onClass(model.name))
-            vemto.log.detail(phpFile)
+                //vemto.log.detail(this.helpers.getAllMethodNames(phpFile.onClass(model.name)))
+                //vemto.log.detail(model)
+                //vemto.log.detail(phpFile.onClass(model.name))
+                //vemto.log.detail(phpFile)
             phpFile.addUseStatement('Kamansoft\\LaravelBlame\\Traits\\ModelBlamer')
             phpFile.onClass(model.name).addTrait('ModelBlamer')
 
@@ -266,13 +274,13 @@ module.exports = (vemto) => {
             })
 
             vemto.log.message('crud repository')
-            vemto.log.detail(this.crudRepository)
+                //vemto.log.detail(this.crudRepository)
             this.crudRepository.forEach(crud => {
                 let crudModelRelationships = this.getAllRelationshipsFromModel(crud.model),
                     modelRelationshipsManager = this.getCrudModelRelationshipsManager(crud, crudModelRelationships)
 
                 vemto.log.message('curd model relationships for ' + crud.model.name)
-                vemto.log.detail(crudModelRelationships)
+                    //vemto.log.detail(crudModelRelationships)
                 let options = this.getOptionsForFilamentResource(crud)
 
 
@@ -285,7 +293,7 @@ module.exports = (vemto) => {
                 crud.inputs.forEach(function(input) {
 
                     if (input.type == 'select' && !input.relationshipId) {
-                        vemto.log.detail(input)
+                        //vemto.log.detail(input)
                         input.items.forEach(function(selectOption) {
                             localizationKeys[selectOption.label] = selectOption.label
                             vemto.log.message('--> Lang for; ' + selectOption.label + ' option')
@@ -300,9 +308,9 @@ module.exports = (vemto) => {
                 })
                 vemto.log.message('Generating FilamentResource for ' + crud.model.name)
                 vemto.log.message('FilamentResource Inputs')
-                vemto.log.detail(options.data.crud.inputs)
+                    //vemto.log.detail(options.data.crud.inputs)
                 vemto.log.message('FilamentResource TABLE Inputs')
-                vemto.log.detail(options.data.crudTableInputs)
+                    //vemto.log.detail(options.data.crudTableInputs)
 
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/FilamentResource.vemtl', `${basePath}/Resources/${crud.model.name}Resource.php`, options)
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/pages/Edit.vemtl', `${basePath}/Resources/${crud.model.name}Resource/Pages/Edit${crud.model.name}.php`, options)
@@ -352,16 +360,16 @@ module.exports = (vemto) => {
                 let relationshipOptions = this.getOptionsForFilamentResource(relModelCrud, true, rel, crud.model)
 
                 vemto.log.message('RelationshipOptions')
-                vemto.log.detail(relationshipOptions)
+                    //vemto.log.detail(relationshipOptions)
 
 
 
 
                 vemto.log.message('Relationship Manager for: ' + rel.name + ' of: ' + crud.model.name)
                 vemto.log.message('Relationship Inputs')
-                vemto.log.detail(relationshipOptions.data.crud.inputs)
+                    //vemto.log.detail(relationshipOptions.data.crud.inputs)
                 vemto.log.message('Relationship TABLE Inputs')
-                vemto.log.detail(relationshipOptions.data.crudTableInputs)
+                    //vemto.log.detail(relationshipOptions.data.crudTableInputs)
 
 
                 vemto.renderTemplate(this.projectCustomTemplateFilesPath() + 'files/ResourceManager.vemtl',
