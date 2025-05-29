@@ -97,8 +97,12 @@ module.exports = (vemto) => {
 
         beforeRenderModel(template, content) {
             vemto.log.message('beforeRenderModel')
+            vemto.log.detail(vemto.getPluginData())
             let data = template.getData(),
                 model = data.model
+
+            vemto.log.detail(model)
+            vemto.log.detail(this.helper.getCrudFromModel(model))
 
             let crud_id = (model.getMainCruds().length > 0) ? model.getMainCruds()[0].id : null;
 
@@ -597,7 +601,7 @@ module.exports = (vemto) => {
             }
             return false;
         },
-        helpers: {
+        helper: {
             getAllMethodNames(obj) {
                 const methods = new Set();
                 let current = obj;
@@ -652,6 +656,20 @@ module.exports = (vemto) => {
 
                 phpFile.content = newContent;
                 return phpFile;
+            },
+            getCrudFromModel(model) {
+                let modelCrudId = false;
+                try {
+                    modelCrudId = (model.getMainCruds().length > 0) ? model.getMainCruds()[0].id : false;
+
+                    if (!modelCrudId) {
+                        vemto.log.warning('model named' + model.name + ' has not related filament crud')
+                        return false
+                    }
+                    return vemto.getPluginData().cruds.find(crud => crud.id === modelCrudId)
+                } catch (e) {
+                    throw new Error('Cant Retrive Crud from Model, ' + e.message)
+                }
             }
         }
 

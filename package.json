@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
-    "id": "com.kamansoft.filament",
-    "name": "kamansoft-filament",
+    "id": "com.kamansoft.vemto-filament-plugin",
+    "name": "kamansoft-vemto-filament-plugin",
     "title": "Kamansoft Filament",
     "description": "Kamansoft version of vemto Filament Plugin",
     "image": "",
