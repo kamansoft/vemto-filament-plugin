@@ -6,7 +6,11 @@
     "description": "Kamansoft version of vemto Filament Plugin",
     "image": "",
     "main": "src/main.js",
-    "vueComponent": "dist/kamansoft-filament.umd.min.js",
+    "vueComponent": "dist/kamansoft-vemto-filament.umd.min.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kamansoft/vemto-filament-plugin"
+    },
     "minVemtoVersion": "1.0.5",
     "dependencies": {
         "@vue/cli-service": "^5.0.8",
